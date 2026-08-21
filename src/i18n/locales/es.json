@@ -1,0 +1,108 @@
+{
+  "common": {
+    "appName": "Smart Grid",
+    "appTagline": "Monitoreo energético",
+    "userHome": "Usuario / Hogar",
+    "myAccount": "Mi cuenta",
+    "logOut": "Cerrar sesión"
+  },
+  "nav": {
+    "home": "Inicio",
+    "consumption": "Consumo",
+    "alerts": "Alertas",
+    "invoices": "Facturas"
+  },
+  "home": {
+    "subtitle": "Resumen de tu consumo y estado actual",
+    "consumptionCard": {
+      "title": "Consumo acumulado del período actual",
+      "period": "Este período",
+      "label": "Consumo total"
+    },
+    "alertsCard": {
+      "title": "Alertas de anomalías",
+      "viewAll": "Ver todas las alertas"
+    },
+    "chartCard": {
+      "title": "Historial de consumo",
+      "period": "Este mes",
+      "caption": "Muestra tu consumo diario del período seleccionado."
+    },
+    "invoicesCard": {
+      "title": "Estado de mis facturas",
+      "period": "Período",
+      "status": "Estado",
+      "dueDate": "Vencimiento",
+      "viewAll": "Ver todas las facturas"
+    },
+    "infoBanner": {
+      "title": "Información importante",
+      "text": "Las alertas de anomalías se generan cerca del momento en que ocurre el patrón de consumo, no solo al momento de facturar."
+    }
+  },
+  "invoiceStatus": {
+    "pagada": "Pagada",
+    "pendiente": "Pendiente",
+    "vencida": "Vencida"
+  },
+    "consumption": {
+    "subtitle": "Revisa tu consumo acumulado e histórico.",
+    "periodLabel": "Período",
+    "periods": {
+      "day": "Día",
+      "week": "Semana",
+      "month": "Mes",
+      "year": "Año"
+    },
+    "accumulatedTitle": "Consumo acumulado en {{period}}",
+    "total": "Consumo total",
+    "chartTitle": "Histórico de consumo diario",
+    "legend": "Consumo (kWh)",
+    "detailTitle": "Detalle del consumo diario",
+    "table": {
+      "date": "Fecha",
+      "kwh": "Consumo (kWh)",
+      "type": "Tipo",
+      "typeValue": "Consumo"
+    },
+    "showMore": "Ver más días"
+  },
+    "alerts": {
+    "subtitle": "Revisa las alertas generadas en tu instalación.",
+    "table": {
+      "type": "Tipo",
+      "description": "Descripción",
+      "meter": "Medidor",
+      "detectedAt": "Fecha",
+      "status": "Estado"
+    },
+    "type": {
+      "anomalia_consumo": "Consumo inusual",
+      "sensor_defectuoso": "Sensor defectuoso"
+    },
+    "status": {
+      "pendiente": "Pendiente",
+      "resuelta": "Resuelta"
+    },
+    "empty": "No tienes alertas registradas."
+  },
+    "invoices": {
+    "subtitle": "Consulta el estado de tus facturas.",
+    "table": {
+      "period": "Período",
+      "status": "Estado",
+      "dueDate": "Vencimiento",
+      "action": "Detalle"
+    },
+    "viewDetail": "Ver detalle"
+  },
+  "invoiceDetail": {
+    "subtitle": "Período de facturación",
+    "periodLabel": "Período",
+    "consumptionLabel": "Consumo acumulado (kWh)",
+    "tariffLabel": "Tarifa aplicada",
+    "viewInvoice": "Ver factura",
+    "back": "Volver a facturas",
+    "notFound": "Factura no encontrada."
+  }
+}
