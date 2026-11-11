@@ -8,7 +8,7 @@ import Card from '../../components/Card'
 import InvoiceStatusBadge from '../../components/InvoiceStatusBadge'
 import { useAlerts, useConsumptionTotal, useInvoices, useReadings } from '../../hooks/queries'
 import { groupReadings } from '../../utils/consumption'
-import { formatDate, formatDateTime, formatKwh, formatMeterId, formatPeriod } from '../../utils/format'
+import { formatDate, formatDateTime, formatKwh, formatPeriod } from '../../utils/format'
 
 function Home() {
   const { t } = useTranslation()
@@ -35,7 +35,7 @@ function Home() {
                 <p className="text-sm text-gray-500 mt-1">{t('home.consumptionCard.period')}</p>
                 <p className="mt-4">
                   <span className="text-4xl font-bold text-blue-600">{formatKwh(total.data ?? 0)}</span>
-                  <span className="text-lg font-semibold text-blue-600 ml-1">kWh</span>
+                  <span className="text-lg font-semibold text-blue-600 ml-1">{t('common.kwh')}</span>
                 </p>
                 <p className="text-sm text-gray-500 mt-1">{t('home.consumptionCard.label')}</p>
               </div>
@@ -53,12 +53,9 @@ function Home() {
               <div className="bg-red-50 border border-red-100 rounded-lg p-4 mt-4 flex gap-3">
                 <AlertTriangle className="text-red-500 shrink-0" size={20} />
                 <div>
-                  <p className="font-medium text-gray-900 text-sm">{t(`alerts.detected.${latestAlert.type}`)}</p>
-                  <p className="text-sm text-gray-500">{latestAlert.description}</p>
-                  <p className="text-sm text-gray-500">
-                    {t('home.alertsCard.meter', { id: formatMeterId(latestAlert.meterId) })}
-                  </p>
-                  <p className="text-sm text-gray-500">{formatDateTime(latestAlert.detectedAt)}</p>
+                  <p className="font-medium text-gray-900 text-sm">{t('home.alertsCard.latestAnomaly')}</p>
+                  <p className="text-sm text-gray-500">{latestAlert.razon}</p>
+                  <p className="text-sm text-gray-500">{formatDateTime(latestAlert.timestamp)}</p>
                 </div>
               </div>
             ) : (
@@ -78,17 +75,21 @@ function Home() {
             </span>
           </div>
           <AsyncState isPending={readings.isPending} error={readings.error}>
-            <div className="h-64 mt-4">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={chartData}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-                  <XAxis dataKey="label" tick={{ fontSize: 12 }} tickLine={false} axisLine={{ stroke: '#e5e7eb' }} />
-                  <YAxis tick={{ fontSize: 12 }} tickLine={false} axisLine={false} />
-                  <Tooltip />
-                  <Line type="monotone" dataKey="kwh" stroke="#2563eb" strokeWidth={2} dot={{ r: 3, fill: '#2563eb' }} />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
+            {chartData.length === 0 ? (
+              <p className="text-sm text-gray-500 py-6 text-center">{t('consumption.empty')}</p>
+            ) : (
+              <div className="h-64 mt-4">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={chartData}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                    <XAxis dataKey="label" tick={{ fontSize: 12 }} tickLine={false} axisLine={{ stroke: '#e5e7eb' }} />
+                    <YAxis tick={{ fontSize: 12 }} tickLine={false} axisLine={false} />
+                    <Tooltip />
+                    <Line type="monotone" dataKey="kwh" stroke="#2563eb" strokeWidth={2} dot={{ r: 3, fill: '#2563eb' }} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            )}
             <p className="text-sm text-gray-500 mt-2">{t('home.chartCard.caption')}</p>
           </AsyncState>
         </Card>
@@ -110,11 +111,13 @@ function Home() {
                 <tbody>
                   {recentInvoices.map((invoice) => (
                     <tr key={invoice.id} className="border-t border-gray-100">
-                      <td className="py-3 text-gray-900">{formatPeriod(invoice.periodStart, invoice.periodEnd)}</td>
+                      <td className="py-3 text-gray-900">{formatPeriod(invoice.periodoInicio, invoice.periodoFin)}</td>
                       <td className="py-3">
-                        <InvoiceStatusBadge status={invoice.status} />
+                        <InvoiceStatusBadge status={invoice.estado} />
                       </td>
-                      <td className="py-3 text-gray-500">{invoice.dueDate ? formatDate(invoice.dueDate) : '—'}</td>
+                      <td className="py-3 text-gray-500">
+                        {invoice.fechaVencimiento ? formatDate(invoice.fechaVencimiento) : t('common.emptyValue')}
+                      </td>
                     </tr>
                   ))}
                 </tbody>

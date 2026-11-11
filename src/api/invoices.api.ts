@@ -1,42 +1,28 @@
+import axios from 'axios'
+import i18n from '../i18n'
 import { http } from './http'
-import { env } from '../config/env'
-import { invoicesMock } from '../mocks/invoices.mock'
-import type { InvoiceDto } from './dto'
-import type { Invoice, InvoiceStatus } from '../types'
+import type { FacturaResponse } from './dto'
 
-const statusMap: Record<InvoiceDto['estado'], InvoiceStatus> = {
-  PENDIENTE: 'pending',
-  PAGADA: 'paid',
-  VENCIDA: 'overdue',
+export async function getMyInvoices(): Promise<FacturaResponse[]> {
+  const { data } = await http.get<FacturaResponse[]>('/api/facturas/mias')
+  return data
 }
 
-function toInvoice(dto: InvoiceDto): Invoice {
-  return {
-    id: dto.id,
-    meterId: dto.medidorId,
-    periodStart: dto.periodoInicio,
-    periodEnd: dto.periodoFin,
-    totalAmount: dto.montoTotal,
-    status: statusMap[dto.estado],
-    accumulatedKwh: dto.consumoAcumuladoKwh ?? null,
-    appliedTariff: dto.tarifaValor ?? null,
-    dueDate: dto.fechaVencimiento ?? null,
+export async function getInvoice(id: number): Promise<FacturaResponse> {
+  try {
+    const { data } = await http.get<FacturaResponse>(`/api/facturas/${id}`)
+    return data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.response?.status === 403) {
+        throw new Error(i18n.t('errors.invoiceForbidden'), { cause: error })
+      }
+      if (error.response?.status === 404) {
+        throw new Error(i18n.t('errors.invoiceNotFound'), { cause: error })
+      }
+    }
+    throw error
   }
 }
 
-export async function getInvoicesByMeter(meterId: number): Promise<Invoice[]> {
-  const dtos = env.useMocks.invoices
-    ? invoicesMock.filter((dto) => dto.medidorId === meterId)
-    : (await http.get<InvoiceDto[]>('/api/facturas', { params: { medidorId: meterId } })).data
-  return dtos.map(toInvoice).sort((a, b) => b.periodEnd.localeCompare(a.periodEnd))
-}
-
-export async function getInvoice(id: number): Promise<Invoice> {
-  if (env.useMocks.invoices) {
-    const dto = invoicesMock.find((item) => item.id === id)
-    if (!dto) throw new Error('Invoice not found')
-    return toInvoice(dto)
-  }
-  const { data } = await http.get<InvoiceDto>(`/api/facturas/${id}`)
-  return toInvoice(data)
-}
+export const getInvoices = getMyInvoices

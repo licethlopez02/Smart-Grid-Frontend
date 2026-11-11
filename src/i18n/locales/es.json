@@ -6,7 +6,20 @@
     "logOut": "Cerrar sesión",
     "loading": "Cargando…",
     "loadError": "No se pudo cargar la información. Intenta de nuevo.",
-    "noAccess": "No tienes acceso a esta sección."
+    "noAccess": "No tienes acceso a esta sección.",
+    "kwh": "kWh",
+    "perKwh": "/ kWh",
+    "emptyValue": "—"
+  },
+  "errors": {
+    "unexpected": "Ha ocurrido un error inesperado.",
+    "unauthorized": "No autorizado. Por favor inicia sesión.",
+    "forbidden": "Acceso denegado. No tienes permisos para consultar este medidor o recurso.",
+    "notFound": "El medidor o recurso solicitado no fue encontrado.",
+    "unavailable": "Servicio no disponible temporalmente.",
+    "invoiceForbidden": "No tienes permiso para ver esta factura.",
+    "invoiceNotFound": "La factura solicitada no existe.",
+    "meterUnavailable": "Medidor no disponible."
   },
   "nav": {
     "home": "Inicio",
@@ -21,7 +34,38 @@
     "password": "Contraseña",
     "submit": "Ingresar",
     "submitting": "Ingresando…",
-    "error": "No se pudo iniciar sesión. Intenta de nuevo."
+    "error": "No se pudo iniciar sesión. Intenta de nuevo.",
+    "noAccount": "¿No tienes cuenta?",
+    "register": "Crear cuenta"
+  },
+  "register": {
+    "title": "Crear cuenta",
+    "subtitle": "Regístrate para consultar tu consumo y tus facturas.",
+    "name": "Nombre",
+    "confirmPassword": "Confirmar contraseña",
+    "passwordHint": "Mínimo {{min}} caracteres.",
+    "passwordTooShort": "La contraseña debe tener al menos {{min}} caracteres.",
+    "passwordMismatch": "Las contraseñas no coinciden.",
+    "submit": "Crear cuenta",
+    "submitting": "Creando cuenta…",
+    "error": "No se pudo crear la cuenta. Intenta de nuevo.",
+    "haveAccount": "¿Ya tienes cuenta?",
+    "goToLogin": "Inicia sesión"
+  },
+  "account": {
+    "title": "Mi cuenta",
+    "changePassword": "Cambiar contraseña",
+    "currentPassword": "Contraseña actual",
+    "newPassword": "Contraseña nueva",
+    "confirmPassword": "Confirmar contraseña nueva",
+    "passwordHint": "Mínimo {{min}} caracteres.",
+    "passwordTooShort": "La contraseña nueva debe tener al menos {{min}} caracteres.",
+    "passwordMismatch": "Las contraseñas nuevas no coinciden.",
+    "samePassword": "La contraseña nueva debe ser distinta de la actual.",
+    "submit": "Guardar contraseña",
+    "submitting": "Guardando…",
+    "success": "Contraseña actualizada correctamente.",
+    "error": "No se pudo cambiar la contraseña. Intenta de nuevo."
   },
   "home": {
     "subtitle": "Resumen de tu consumo y estado actual",
@@ -32,8 +76,8 @@
     },
     "alertsCard": {
       "title": "Alertas de anomalías",
-      "meter": "Medidor: {{id}}",
-      "empty": "No hay alertas registradas.",
+      "latestAnomaly": "Última anomalía detectada",
+      "empty": "No hay anomalías registradas.",
       "viewAll": "Ver todas las alertas"
     },
     "chartCard": {
@@ -83,33 +127,32 @@
     "showMore": "Ver más"
   },
   "alerts": {
-    "subtitle": "Revisa las alertas generadas en tu instalación.",
+    "subtitle": "Revisa las anomalías detectadas en tu instalación.",
+    "filterAll": "Todas",
+    "filterPending": "Pendientes",
     "table": {
-      "type": "Tipo",
+      "value": "Lectura (kWh)",
       "description": "Descripción",
-      "meter": "Medidor",
-      "detectedAt": "Fecha",
-      "status": "Estado"
+      "detectedAt": "Fecha y hora",
+      "status": "Estado",
+      "action": "Acción"
     },
-    "type": {
-      "consumption_anomaly": "Consumo inusual",
-      "faulty_sensor": "Sensor defectuoso"
-    },
-    "detected": {
-      "consumption_anomaly": "Consumo inusual detectado",
-      "faulty_sensor": "Sensor defectuoso detectado"
-    },
+    "resolve": "Resolver",
+    "resolving": "Resolviendo…",
+    "resolveError": "No se pudo resolver la anomalía.",
     "status": {
       "pending": "Pendiente",
       "resolved": "Resuelta"
     },
-    "empty": "No tienes alertas registradas."
+    "empty": "No hay anomalías registradas.",
+    "emptyPending": "No hay anomalías pendientes."
   },
   "invoices": {
     "subtitle": "Consulta el estado de tus facturas.",
     "empty": "Aún no tienes facturas.",
     "table": {
       "period": "Período",
+      "total": "Total",
       "status": "Estado",
       "dueDate": "Vencimiento",
       "action": "Detalle"
@@ -117,15 +160,33 @@
     "viewDetail": "Ver detalle"
   },
   "invoiceDetail": {
+    "title": "Factura",
     "subtitle": "Período de facturación",
+    "billingInfo": "Información de facturación",
     "periodLabel": "Período",
-    "consumptionLabel": "Consumo acumulado (kWh)",
+    "amountLabel": "Monto total",
+    "statusLabel": "Estado",
+    "consumptionLabel": "Consumo acumulado",
     "tariffLabel": "Tarifa aplicada",
-    "back": "Volver a facturas"
+    "tariffValidityLabel": "Vigencia de la tarifa",
+    "generationDateLabel": "Fecha de generación",
+    "dueDateLabel": "Fecha de vencimiento",
+    "paymentDateLabel": "Fecha de pago",
+    "notPaid": "Pendiente de pago",
+    "anomaliesTitle": "Anomalías no resueltas",
+    "anomaliesEmpty": "No hay anomalías no resueltas registradas en este período.",
+    "anomaliesTable": {
+      "id": "ID",
+      "timestamp": "Fecha y hora",
+      "value": "Lectura",
+      "reason": "Razón"
+    },
+    "back": "Volver a facturas",
+    "tariffOpenEnded": "sin fecha de fin"
   },
   "invoiceStatus": {
-    "pending": "Pendiente",
-    "paid": "Pagada",
-    "overdue": "Vencida"
+    "PENDIENTE": "Pendiente",
+    "PAGADA": "Pagada",
+    "VENCIDA": "Vencida"
   }
 }
