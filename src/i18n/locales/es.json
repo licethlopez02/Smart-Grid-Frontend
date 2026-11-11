@@ -110,6 +110,7 @@
     "empty": "Aún no tienes facturas.",
     "table": {
       "period": "Período",
+      "total": "Total",
       "status": "Estado",
       "dueDate": "Vencimiento",
       "action": "Detalle"
@@ -118,12 +119,31 @@
   },
   "invoiceDetail": {
     "subtitle": "Período de facturación",
+    "billingInfo": "Información de facturación",
     "periodLabel": "Período",
-    "consumptionLabel": "Consumo acumulado (kWh)",
+    "amountLabel": "Monto total",
+    "statusLabel": "Estado",
+    "consumptionLabel": "Consumo acumulado",
     "tariffLabel": "Tarifa aplicada",
+    "tariffValidityLabel": "Vigencia de la tarifa",
+    "generationDateLabel": "Fecha de generación",
+    "dueDateLabel": "Fecha de vencimiento",
+    "paymentDateLabel": "Fecha de pago",
+    "notPaid": "Pendiente de pago",
+    "anomaliesTitle": "Anomalías no resueltas",
+    "anomaliesEmpty": "No hay anomalías no resueltas registradas en este período.",
+    "anomaliesTable": {
+      "id": "ID",
+      "timestamp": "Fecha y hora",
+      "value": "Lectura",
+      "reason": "Razón"
+    },
     "back": "Volver a facturas"
   },
   "invoiceStatus": {
+    "PENDIENTE": "Pendiente",
+    "PAGADA": "Pagada",
+    "VENCIDA": "Vencida",
     "pending": "Pendiente",
     "paid": "Pagada",
     "overdue": "Vencida"

@@ -1,8 +1,9 @@
 import { useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
+import axios from 'axios'
 import { getAlerts } from '../api/alerts.api'
 import { getConsumptionTotal, getReadings } from '../api/consumption.api'
-import { getInvoice, getInvoicesByMeter } from '../api/invoices.api'
+import { getInvoice, getMyInvoices } from '../api/invoices.api'
 import { getMyMeterId } from '../api/meters.api'
 import { getRange, toApiInstant, type Period } from '../utils/consumption'
 
@@ -47,9 +48,22 @@ export function useAlerts() {
 }
 
 export function useInvoices() {
-  return useMeterQuery(['invoices'], getInvoicesByMeter)
+  return useQuery({
+    queryKey: ['invoices', 'mias'],
+    queryFn: getMyInvoices,
+  })
 }
 
 export function useInvoice(id: number) {
-  return useQuery({ queryKey: ['invoice', id], queryFn: () => getInvoice(id) })
+  return useQuery({
+    queryKey: ['invoice', id],
+    queryFn: () => getInvoice(id),
+    enabled: Number.isFinite(id) && id > 0,
+    retry: (failureCount, error) => {
+      if (axios.isAxiosError(error) && (error.response?.status === 403 || error.response?.status === 404)) {
+        return false
+      }
+      return failureCount < 2
+    },
+  })
 }

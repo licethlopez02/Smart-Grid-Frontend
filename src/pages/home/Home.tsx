@@ -110,11 +110,13 @@ function Home() {
                 <tbody>
                   {recentInvoices.map((invoice) => (
                     <tr key={invoice.id} className="border-t border-gray-100">
-                      <td className="py-3 text-gray-900">{formatPeriod(invoice.periodStart, invoice.periodEnd)}</td>
+                      <td className="py-3 text-gray-900">{formatPeriod(invoice.periodoInicio, invoice.periodoFin)}</td>
                       <td className="py-3">
-                        <InvoiceStatusBadge status={invoice.status} />
+                        <InvoiceStatusBadge status={invoice.estado} />
                       </td>
-                      <td className="py-3 text-gray-500">{invoice.dueDate ? formatDate(invoice.dueDate) : '—'}</td>
+                      <td className="py-3 text-gray-500">
+                        {invoice.fechaVencimiento ? formatDate(invoice.fechaVencimiento) : '—'}
+                      </td>
                     </tr>
                   ))}
                 </tbody>

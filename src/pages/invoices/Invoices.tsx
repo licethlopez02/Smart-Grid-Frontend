@@ -5,7 +5,7 @@ import AsyncState from '../../components/AsyncState'
 import Card from '../../components/Card'
 import InvoiceStatusBadge from '../../components/InvoiceStatusBadge'
 import { useInvoices } from '../../hooks/queries'
-import { formatDate, formatPeriod } from '../../utils/format'
+import { formatCurrency, formatDate, formatPeriod } from '../../utils/format'
 
 function Invoices() {
   const { t } = useTranslation()
@@ -21,32 +21,45 @@ function Invoices() {
           {invoices.length === 0 ? (
             <p className="text-gray-500 text-sm py-6 text-center">{t('invoices.empty')}</p>
           ) : (
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="text-left text-gray-500">
-                  <th className="font-normal pb-2">{t('invoices.table.period')}</th>
-                  <th className="font-normal pb-2">{t('invoices.table.status')}</th>
-                  <th className="font-normal pb-2">{t('invoices.table.dueDate')}</th>
-                  <th className="font-normal pb-2">{t('invoices.table.action')}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {invoices.map((invoice) => (
-                  <tr key={invoice.id} className="border-t border-gray-100">
-                    <td className="py-3 text-gray-900">{formatPeriod(invoice.periodStart, invoice.periodEnd)}</td>
-                    <td className="py-3">
-                      <InvoiceStatusBadge status={invoice.status} />
-                    </td>
-                    <td className="py-3 text-gray-500">{invoice.dueDate ? formatDate(invoice.dueDate) : '—'}</td>
-                    <td className="py-3">
-                      <Link to={`/invoices/${invoice.id}`} className="text-blue-600 font-medium flex items-center gap-1">
-                        {t('invoices.viewDetail')} <ArrowRight size={14} />
-                      </Link>
-                    </td>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="text-left text-gray-500 border-b border-gray-100">
+                    <th className="font-normal pb-3">{t('invoices.table.period')}</th>
+                    <th className="font-normal pb-3">{t('invoices.table.total')}</th>
+                    <th className="font-normal pb-3">{t('invoices.table.status')}</th>
+                    <th className="font-normal pb-3">{t('invoices.table.dueDate')}</th>
+                    <th className="font-normal pb-3 text-right">{t('invoices.table.action')}</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {invoices.map((invoice) => (
+                    <tr key={invoice.id} className="border-b border-gray-100 last:border-b-0">
+                      <td className="py-3.5 text-gray-900 font-medium">
+                        {formatPeriod(invoice.periodoInicio, invoice.periodoFin)}
+                      </td>
+                      <td className="py-3.5 text-gray-900 font-semibold">
+                        {formatCurrency(invoice.montoTotal)}
+                      </td>
+                      <td className="py-3.5">
+                        <InvoiceStatusBadge status={invoice.estado} />
+                      </td>
+                      <td className="py-3.5 text-gray-500">
+                        {invoice.fechaVencimiento ? formatDate(invoice.fechaVencimiento) : '—'}
+                      </td>
+                      <td className="py-3.5 text-right">
+                        <Link
+                          to={`/invoices/${invoice.id}`}
+                          className="text-blue-600 hover:text-blue-700 font-medium inline-flex items-center gap-1"
+                        >
+                          {t('invoices.viewDetail')} <ArrowRight size={14} />
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </AsyncState>
       </Card>
