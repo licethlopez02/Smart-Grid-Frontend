@@ -18,3 +18,10 @@ export async function getMe(): Promise<UsuarioResponse> {
   const { data } = await http.get<UsuarioResponse>('/api/usuarios/me')
   return data
 }
+
+export async function cambiarContrasena(
+  contrasenaActual: string,
+  contrasenaNueva: string,
+): Promise<void> {
+  await http.put('/api/usuarios/me/contrasena', { contrasenaActual, contrasenaNueva })
+}

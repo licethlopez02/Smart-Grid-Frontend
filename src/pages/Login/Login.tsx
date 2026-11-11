@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Zap } from 'lucide-react'
 import { getErrorMessage } from '../../api/http'
@@ -87,6 +87,12 @@ function Login() {
         >
           {isSubmitting ? t('login.submitting') : t('login.submit')}
         </button>
+        <p className="mt-4 text-center text-sm text-gray-500">
+          {t('login.noAccount')}{' '}
+          <Link to="/register" className="text-blue-600 hover:text-blue-700 font-medium">
+            {t('login.register')}
+          </Link>
+        </p>
       </form>
     </div>
   )

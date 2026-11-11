@@ -57,7 +57,14 @@ function MainLayout() {
         </div>
 
         <div className="border-t border-white/10 px-6 py-5">
-          <div className="flex items-center gap-3">
+          <NavLink
+            to="/account"
+            className={({ isActive }) =>
+              `flex items-center gap-3 rounded-lg -mx-2 px-2 py-2 transition-colors ${
+                isActive ? 'bg-white/10' : 'hover:bg-white/5'
+              }`
+            }
+          >
             <div className="bg-slate-600 rounded-full p-2">
               <User size={16} />
             </div>
@@ -65,7 +72,7 @@ function MainLayout() {
               <p className="text-sm font-medium leading-tight truncate">{user?.name}</p>
               <p className="text-xs text-slate-400 leading-tight">{t('common.myAccount')}</p>
             </div>
-          </div>
+          </NavLink>
           <button
             onClick={handleLogout}
             className="flex items-center gap-2 text-slate-400 hover:text-white text-sm mt-4 transition-colors"

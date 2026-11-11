@@ -34,7 +34,38 @@
     "password": "Contraseña",
     "submit": "Ingresar",
     "submitting": "Ingresando…",
-    "error": "No se pudo iniciar sesión. Intenta de nuevo."
+    "error": "No se pudo iniciar sesión. Intenta de nuevo.",
+    "noAccount": "¿No tienes cuenta?",
+    "register": "Crear cuenta"
+  },
+  "register": {
+    "title": "Crear cuenta",
+    "subtitle": "Regístrate para consultar tu consumo y tus facturas.",
+    "name": "Nombre",
+    "confirmPassword": "Confirmar contraseña",
+    "passwordHint": "Mínimo {{min}} caracteres.",
+    "passwordTooShort": "La contraseña debe tener al menos {{min}} caracteres.",
+    "passwordMismatch": "Las contraseñas no coinciden.",
+    "submit": "Crear cuenta",
+    "submitting": "Creando cuenta…",
+    "error": "No se pudo crear la cuenta. Intenta de nuevo.",
+    "haveAccount": "¿Ya tienes cuenta?",
+    "goToLogin": "Inicia sesión"
+  },
+  "account": {
+    "title": "Mi cuenta",
+    "changePassword": "Cambiar contraseña",
+    "currentPassword": "Contraseña actual",
+    "newPassword": "Contraseña nueva",
+    "confirmPassword": "Confirmar contraseña nueva",
+    "passwordHint": "Mínimo {{min}} caracteres.",
+    "passwordTooShort": "La contraseña nueva debe tener al menos {{min}} caracteres.",
+    "passwordMismatch": "Las contraseñas nuevas no coinciden.",
+    "samePassword": "La contraseña nueva debe ser distinta de la actual.",
+    "submit": "Guardar contraseña",
+    "submitting": "Guardando…",
+    "success": "Contraseña actualizada correctamente.",
+    "error": "No se pudo cambiar la contraseña. Intenta de nuevo."
   },
   "home": {
     "subtitle": "Resumen de tu consumo y estado actual",
