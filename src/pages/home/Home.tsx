@@ -8,7 +8,7 @@ import Card from '../../components/Card'
 import InvoiceStatusBadge from '../../components/InvoiceStatusBadge'
 import { useAlerts, useConsumptionTotal, useInvoices, useReadings } from '../../hooks/queries'
 import { groupReadings } from '../../utils/consumption'
-import { formatDate, formatDateTime, formatKwh, formatMeterId, formatPeriod } from '../../utils/format'
+import { formatDate, formatDateTime, formatKwh, formatPeriod } from '../../utils/format'
 
 function Home() {
   const { t } = useTranslation()
@@ -53,12 +53,9 @@ function Home() {
               <div className="bg-red-50 border border-red-100 rounded-lg p-4 mt-4 flex gap-3">
                 <AlertTriangle className="text-red-500 shrink-0" size={20} />
                 <div>
-                  <p className="font-medium text-gray-900 text-sm">{t(`alerts.detected.${latestAlert.type}`)}</p>
-                  <p className="text-sm text-gray-500">{latestAlert.description}</p>
-                  <p className="text-sm text-gray-500">
-                    {t('home.alertsCard.meter', { id: formatMeterId(latestAlert.meterId) })}
-                  </p>
-                  <p className="text-sm text-gray-500">{formatDateTime(latestAlert.detectedAt)}</p>
+                  <p className="font-medium text-gray-900 text-sm">{t('home.alertsCard.latestAnomaly')}</p>
+                  <p className="text-sm text-gray-500">{latestAlert.razon}</p>
+                  <p className="text-sm text-gray-500">{formatDateTime(latestAlert.timestamp)}</p>
                 </div>
               </div>
             ) : (

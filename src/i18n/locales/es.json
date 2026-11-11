@@ -32,8 +32,8 @@
     },
     "alertsCard": {
       "title": "Alertas de anomalías",
-      "meter": "Medidor: {{id}}",
-      "empty": "No hay alertas registradas.",
+      "latestAnomaly": "Última anomalía detectada",
+      "empty": "No hay anomalías registradas.",
       "viewAll": "Ver todas las alertas"
     },
     "chartCard": {
@@ -83,27 +83,25 @@
     "showMore": "Ver más"
   },
   "alerts": {
-    "subtitle": "Revisa las alertas generadas en tu instalación.",
+    "subtitle": "Revisa las anomalías detectadas en tu instalación.",
+    "filterAll": "Todas",
+    "filterPending": "Pendientes",
     "table": {
-      "type": "Tipo",
+      "value": "Lectura (kWh)",
       "description": "Descripción",
-      "meter": "Medidor",
-      "detectedAt": "Fecha",
-      "status": "Estado"
+      "detectedAt": "Fecha y hora",
+      "status": "Estado",
+      "action": "Acción"
     },
-    "type": {
-      "consumption_anomaly": "Consumo inusual",
-      "faulty_sensor": "Sensor defectuoso"
-    },
-    "detected": {
-      "consumption_anomaly": "Consumo inusual detectado",
-      "faulty_sensor": "Sensor defectuoso detectado"
-    },
+    "resolve": "Resolver",
+    "resolving": "Resolviendo…",
+    "resolveError": "No se pudo resolver la anomalía.",
     "status": {
       "pending": "Pendiente",
       "resolved": "Resuelta"
     },
-    "empty": "No tienes alertas registradas."
+    "empty": "No hay anomalías registradas.",
+    "emptyPending": "No hay anomalías pendientes."
   },
   "invoices": {
     "subtitle": "Consulta el estado de tus facturas.",

@@ -1,11 +1,12 @@
 import { useMemo } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
-import { getAlerts } from '../api/alerts.api'
+import { getAnomalies, getPendingAnomalies, resolveAnomaly } from '../api/alerts.api'
 import { getConsumptionTotal, getReadings } from '../api/consumption.api'
 import { getInvoice, getMyInvoices } from '../api/invoices.api'
 import { getMyMeterId } from '../api/meters.api'
 import { getRange, toApiInstant, type Period } from '../utils/consumption'
+import { getErrorMessage } from '../api/http'
 
 /**
  * Hook centralizado para obtener el ID del medidor activo.
@@ -25,18 +26,20 @@ export function useMedidorActivo() {
   })
 }
 
-// Alias de retrocompatibilidad
-export const useMyMeterId = useMedidorActivo
-
 // Runs a query that needs the user's meter id, and merges both loading/error states.
-function useMeterQuery<T>(key: unknown[], fetcher: (meterId: number) => Promise<T>, refetchInterval?: number) {
+function useMeterQuery<T>(
+  key: unknown[],
+  fetcher: (meterId: number) => Promise<T>,
+  options?: { refetchInterval?: number; refetchIntervalInBackground?: boolean },
+) {
   const meter = useMedidorActivo()
   const meterId = meter.data
   const query = useQuery({
     queryKey: [...key, meterId],
     queryFn: () => fetcher(meterId as number),
     enabled: typeof meterId === 'number' && !isNaN(meterId),
-    refetchInterval,
+    refetchInterval: options?.refetchInterval,
+    refetchIntervalInBackground: options?.refetchIntervalInBackground ?? false,
   })
   const error = meter.error ?? query.error
   return { data: query.data, error, isPending: meter.isPending || (!error && query.isPending) }
@@ -56,12 +59,51 @@ export function useReadings(period: Period) {
 
 export function useConsumptionTotal(period: Period) {
   const { from, to } = useRange(period)
-  return useMeterQuery(['consumption-total', period, from, to], (meterId) => getConsumptionTotal(meterId, from, to))
+  return useMeterQuery(['consumption-total', period, from, to], (meterId) =>
+    getConsumptionTotal(meterId, from, to),
+  )
 }
 
-// Alerts must show up close to when they happen (HU-04): poll every 15 s until the backend can push.
-export function useAlerts() {
-  return useMeterQuery(['alerts'], getAlerts, 15_000)
+// Polling each 30 s, only while the tab is visible (refetchIntervalInBackground: false).
+export function useAnomalies() {
+  return useMeterQuery(['anomalies'], getAnomalies, {
+    refetchInterval: 30_000,
+    refetchIntervalInBackground: false,
+  })
+}
+
+// Alias for backward-compatible usage in Home.tsx (shows all anomalies).
+export const useAlerts = useAnomalies
+
+export function useResolveAnomaly() {
+  const queryClient = useQueryClient()
+  const meter = useMedidorActivo()
+  const meterId = meter.data
+
+  return useMutation({
+    mutationFn: (anomalyId: number) => {
+      if (typeof meterId !== 'number') throw new Error('Medidor no disponible.')
+      return resolveAnomaly(meterId, anomalyId)
+    },
+    onSuccess: () => {
+      // Invalidate all anomaly queries so the list refreshes.
+      void queryClient.invalidateQueries({ queryKey: ['anomalies', meterId] })
+    },
+  })
+}
+
+export function usePendingAnomalies(desde?: string, hasta?: string) {
+  const meter = useMedidorActivo()
+  const meterId = meter.data
+  const query = useQuery({
+    queryKey: ['anomalies-pending', meterId, desde, hasta],
+    queryFn: () => getPendingAnomalies(meterId as number, desde, hasta),
+    enabled: typeof meterId === 'number' && !isNaN(meterId),
+    refetchInterval: 30_000,
+    refetchIntervalInBackground: false,
+  })
+  const error = meter.error ?? query.error
+  return { data: query.data, error, isPending: meter.isPending || (!error && query.isPending) }
 }
 
 export function useInvoices() {
@@ -84,3 +126,6 @@ export function useInvoice(id: number) {
     },
   })
 }
+
+// Re-export for callers that need the helper outside of components
+export { getErrorMessage }
