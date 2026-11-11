@@ -2,15 +2,26 @@
   "common": {
     "appName": "Smart Grid",
     "appTagline": "Monitoreo energético",
-    "userHome": "Usuario / Hogar",
     "myAccount": "Mi cuenta",
-    "logOut": "Cerrar sesión"
+    "logOut": "Cerrar sesión",
+    "loading": "Cargando…",
+    "loadError": "No se pudo cargar la información. Intenta de nuevo.",
+    "noAccess": "No tienes acceso a esta sección."
   },
   "nav": {
     "home": "Inicio",
     "consumption": "Consumo",
     "alerts": "Alertas",
     "invoices": "Facturas"
+  },
+  "login": {
+    "title": "Iniciar sesión",
+    "subtitle": "Ingresa con tu cuenta para continuar.",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "submit": "Ingresar",
+    "submitting": "Ingresando…",
+    "error": "No se pudo iniciar sesión. Intenta de nuevo."
   },
   "home": {
     "subtitle": "Resumen de tu consumo y estado actual",
@@ -21,6 +32,8 @@
     },
     "alertsCard": {
       "title": "Alertas de anomalías",
+      "meter": "Medidor: {{id}}",
+      "empty": "No hay alertas registradas.",
       "viewAll": "Ver todas las alertas"
     },
     "chartCard": {
@@ -33,6 +46,7 @@
       "period": "Período",
       "status": "Estado",
       "dueDate": "Vencimiento",
+      "empty": "Aún no tienes facturas.",
       "viewAll": "Ver todas las facturas"
     },
     "infoBanner": {
@@ -40,12 +54,7 @@
       "text": "Las alertas de anomalías se generan cerca del momento en que ocurre el patrón de consumo, no solo al momento de facturar."
     }
   },
-  "invoiceStatus": {
-    "pagada": "Pagada",
-    "pendiente": "Pendiente",
-    "vencida": "Vencida"
-  },
-    "consumption": {
+  "consumption": {
     "subtitle": "Revisa tu consumo acumulado e histórico.",
     "periodLabel": "Período",
     "periods": {
@@ -54,20 +63,26 @@
       "month": "Mes",
       "year": "Año"
     },
-    "accumulatedTitle": "Consumo acumulado en {{period}}",
+    "accumulatedTitle": {
+      "day": "Consumo acumulado hoy",
+      "week": "Consumo acumulado en los últimos 7 días",
+      "month": "Consumo acumulado este mes",
+      "year": "Consumo acumulado este año"
+    },
     "total": "Consumo total",
-    "chartTitle": "Histórico de consumo diario",
+    "chartTitle": "Histórico de consumo",
     "legend": "Consumo (kWh)",
-    "detailTitle": "Detalle del consumo diario",
+    "detailTitle": "Detalle del consumo",
+    "empty": "No hay lecturas en este período.",
     "table": {
       "date": "Fecha",
       "kwh": "Consumo (kWh)",
       "type": "Tipo",
       "typeValue": "Consumo"
     },
-    "showMore": "Ver más días"
+    "showMore": "Ver más"
   },
-    "alerts": {
+  "alerts": {
     "subtitle": "Revisa las alertas generadas en tu instalación.",
     "table": {
       "type": "Tipo",
@@ -77,17 +92,22 @@
       "status": "Estado"
     },
     "type": {
-      "anomalia_consumo": "Consumo inusual",
-      "sensor_defectuoso": "Sensor defectuoso"
+      "consumption_anomaly": "Consumo inusual",
+      "faulty_sensor": "Sensor defectuoso"
+    },
+    "detected": {
+      "consumption_anomaly": "Consumo inusual detectado",
+      "faulty_sensor": "Sensor defectuoso detectado"
     },
     "status": {
-      "pendiente": "Pendiente",
-      "resuelta": "Resuelta"
+      "pending": "Pendiente",
+      "resolved": "Resuelta"
     },
     "empty": "No tienes alertas registradas."
   },
-    "invoices": {
+  "invoices": {
     "subtitle": "Consulta el estado de tus facturas.",
+    "empty": "Aún no tienes facturas.",
     "table": {
       "period": "Período",
       "status": "Estado",
@@ -101,8 +121,11 @@
     "periodLabel": "Período",
     "consumptionLabel": "Consumo acumulado (kWh)",
     "tariffLabel": "Tarifa aplicada",
-    "viewInvoice": "Ver factura",
-    "back": "Volver a facturas",
-    "notFound": "Factura no encontrada."
+    "back": "Volver a facturas"
+  },
+  "invoiceStatus": {
+    "pending": "Pendiente",
+    "paid": "Pagada",
+    "overdue": "Vencida"
   }
 }

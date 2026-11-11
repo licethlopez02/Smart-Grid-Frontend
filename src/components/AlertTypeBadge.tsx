@@ -3,8 +3,8 @@ import { AlertTriangle, Zap } from 'lucide-react'
 import type { AlertType } from '../types'
 
 const config: Record<AlertType, { color: string; icon: typeof AlertTriangle }> = {
-  anomalia_consumo: { color: 'bg-red-100 text-red-700', icon: AlertTriangle },
-  sensor_defectuoso: { color: 'bg-orange-100 text-orange-700', icon: Zap },
+  consumption_anomaly: { color: 'bg-red-100 text-red-700', icon: AlertTriangle },
+  faulty_sensor: { color: 'bg-orange-100 text-orange-700', icon: Zap },
 }
 
 function AlertTypeBadge({ type }: { type: AlertType }) {

@@ -1,16 +1,25 @@
-import { NavLink, Outlet } from 'react-router-dom'
+import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Home, BarChart2, Bell, FileText, Zap, User, LogOut } from 'lucide-react'
+import { useAuth } from '../auth/useAuth'
+import type { Role } from '../types'
 
-const navItems = [
-  { to: '/', labelKey: 'nav.home', icon: Home },
-  { to: '/consumption', labelKey: 'nav.consumption', icon: BarChart2 },
-  { to: '/alerts', labelKey: 'nav.alerts', icon: Bell },
-  { to: '/invoices', labelKey: 'nav.invoices', icon: FileText },
+const navItems: { to: string; labelKey: string; icon: typeof Home; role: Role }[] = [
+  { to: '/', labelKey: 'nav.home', icon: Home, role: 'USUARIO' },
+  { to: '/consumption', labelKey: 'nav.consumption', icon: BarChart2, role: 'USUARIO' },
+  { to: '/alerts', labelKey: 'nav.alerts', icon: Bell, role: 'USUARIO' },
+  { to: '/invoices', labelKey: 'nav.invoices', icon: FileText, role: 'USUARIO' },
 ]
 
 function MainLayout() {
   const { t } = useTranslation()
+  const navigate = useNavigate()
+  const { user, hasRole, logout } = useAuth()
+
+  const handleLogout = () => {
+    logout()
+    navigate('/login', { replace: true })
+  }
 
   return (
     <div className="flex min-h-screen bg-gray-50">
@@ -27,23 +36,23 @@ function MainLayout() {
           </div>
 
           <nav className="mt-4 px-3 flex flex-col gap-1">
-            {navItems.map(({ to, labelKey, icon: Icon }) => (
-              <NavLink
-                key={to}
-                to={to}
-                end={to === '/'}
-                className={({ isActive }) =>
-                  `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${
-                    isActive
-                      ? 'bg-blue-600 text-white'
-                      : 'text-slate-300 hover:bg-white/5 hover:text-white'
-                  }`
-                }
-              >
-                <Icon size={18} />
-                {t(labelKey)}
-              </NavLink>
-            ))}
+            {navItems
+              .filter((item) => hasRole(item.role))
+              .map(({ to, labelKey, icon: Icon }) => (
+                <NavLink
+                  key={to}
+                  to={to}
+                  end={to === '/'}
+                  className={({ isActive }) =>
+                    `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${
+                      isActive ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-white/5 hover:text-white'
+                    }`
+                  }
+                >
+                  <Icon size={18} />
+                  {t(labelKey)}
+                </NavLink>
+              ))}
           </nav>
         </div>
 
@@ -52,12 +61,15 @@ function MainLayout() {
             <div className="bg-slate-600 rounded-full p-2">
               <User size={16} />
             </div>
-            <div>
-              <p className="text-sm font-medium leading-tight">{t('common.userHome')}</p>
+            <div className="min-w-0">
+              <p className="text-sm font-medium leading-tight truncate">{user?.name}</p>
               <p className="text-xs text-slate-400 leading-tight">{t('common.myAccount')}</p>
             </div>
           </div>
-          <button className="flex items-center gap-2 text-slate-400 hover:text-white text-sm mt-4 transition-colors">
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-2 text-slate-400 hover:text-white text-sm mt-4 transition-colors"
+          >
             <LogOut size={16} />
             {t('common.logOut')}
           </button>
