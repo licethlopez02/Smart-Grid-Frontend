@@ -1,16 +1,16 @@
 import { http } from './http'
 import { env } from '../config/env'
 import { invoicesMock } from '../mocks/invoices.mock'
-import type { InvoiceDto } from './dto'
+import type { FacturaResponse } from './dto'
 import type { Invoice, InvoiceStatus } from '../types'
 
-const statusMap: Record<InvoiceDto['estado'], InvoiceStatus> = {
+const statusMap: Record<FacturaResponse['estado'], InvoiceStatus> = {
   PENDIENTE: 'pending',
   PAGADA: 'paid',
   VENCIDA: 'overdue',
 }
 
-function toInvoice(dto: InvoiceDto): Invoice {
+function toInvoice(dto: FacturaResponse): Invoice {
   return {
     id: dto.id,
     meterId: dto.medidorId,
@@ -27,7 +27,7 @@ function toInvoice(dto: InvoiceDto): Invoice {
 export async function getInvoicesByMeter(meterId: number): Promise<Invoice[]> {
   const dtos = env.useMocks.invoices
     ? invoicesMock.filter((dto) => dto.medidorId === meterId)
-    : (await http.get<InvoiceDto[]>('/api/facturas', { params: { medidorId: meterId } })).data
+    : (await http.get<FacturaResponse[]>('/api/facturas', { params: { medidorId: meterId } })).data
   return dtos.map(toInvoice).sort((a, b) => b.periodEnd.localeCompare(a.periodEnd))
 }
 
@@ -37,6 +37,6 @@ export async function getInvoice(id: number): Promise<Invoice> {
     if (!dto) throw new Error('Invoice not found')
     return toInvoice(dto)
   }
-  const { data } = await http.get<InvoiceDto>(`/api/facturas/${id}`)
+  const { data } = await http.get<FacturaResponse>(`/api/facturas/${id}`)
   return toInvoice(data)
 }

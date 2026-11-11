@@ -1,12 +1,19 @@
 import axios from 'axios'
 import { tokenStorage } from '../auth/tokenStorage'
 
-// Relative URLs: the Vite proxy (dev) or the API Gateway (later) decides which service answers.
-export const http = axios.create()
+export const http = axios.create({
+  baseURL: '/api',
+})
 
+// Normalize URL in case callers pass '/api/...' with baseURL: '/api'
 http.interceptors.request.use((config) => {
+  if (config.url?.startsWith('/api/')) {
+    config.url = config.url.replace(/^\/api/, '')
+  }
   const token = tokenStorage.get()
-  if (token) config.headers.Authorization = `Bearer ${token}`
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
   return config
 })
 
@@ -14,21 +21,47 @@ http.interceptors.response.use(
   (response) => response,
   (error: unknown) => {
     if (axios.isAxiosError(error)) {
-      const isAuthCall = String(error.config?.url ?? '').startsWith('/api/auth/')
-      if (error.response?.status === 401 && !isAuthCall) {
+      const status = error.response?.status
+      const requestUrl = String(error.config?.url ?? '')
+      const isAuthCall = requestUrl.includes('/auth/login') || requestUrl.includes('/auth/registro')
+
+      if (status === 401 && !isAuthCall) {
         tokenStorage.clear()
-        window.location.assign('/login')
+        if (typeof window !== 'undefined' && window.location.pathname !== '/login') {
+          window.location.assign('/login')
+        }
       }
+      // 403: no cierra sesión, solo propaga el error
     }
     return Promise.reject(error)
   },
 )
 
-// Every backend error body is { mensaje: string }.
-export function getErrorMessage(error: unknown, fallback: string): string {
+export function getErrorMessage(error: unknown, fallback = 'Ha ocurrido un error inesperado.'): string {
   if (axios.isAxiosError(error)) {
-    const message = (error.response?.data as { mensaje?: string } | undefined)?.mensaje
-    if (message) return message
+    const data = error.response?.data as { mensaje?: string } | undefined
+    if (data && typeof data.mensaje === 'string' && data.mensaje.trim() !== '') {
+      return data.mensaje
+    }
+
+    const status = error.response?.status
+    if (status === 401) {
+      return 'No autorizado. Por favor inicia sesión.'
+    }
+    if (status === 403) {
+      return 'Acceso denegado. No tienes permisos para realizar esta acción.'
+    }
+    if (status === 404) {
+      return 'Recurso no encontrado.'
+    }
+    if (status === 503) {
+      return 'Servicio no disponible temporalmente.'
+    }
   }
+
+  if (error instanceof Error && error.message) {
+    return error.message
+  }
+
   return fallback
 }

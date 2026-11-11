@@ -1,4 +1,4 @@
-import type { ReadingDto } from '../api/dto'
+import type { LecturaResponse } from '../api/dto'
 
 // Daily kWh pattern repeated over time; each day is split into four readings.
 const DAILY_KWH = [
@@ -8,8 +8,8 @@ const DAILY_KWH = [
 const HOURS = [0, 6, 12, 18]
 const WEIGHTS = [0.15, 0.2, 0.3, 0.35]
 
-export function buildReadingsMock(meterId: number, now = new Date()): ReadingDto[] {
-  const readings: ReadingDto[] = []
+export function buildReadingsMock(meterId: number, now = new Date()): LecturaResponse[] {
+  const readings: LecturaResponse[] = []
   for (let back = 400; back >= 0; back--) {
     HOURS.forEach((hour, index) => {
       const date = new Date(now.getFullYear(), now.getMonth(), now.getDate() - back, hour)

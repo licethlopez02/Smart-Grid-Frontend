@@ -1,19 +1,20 @@
 import { http } from './http'
-import type { TokenDto, UserDto } from './dto'
-import type { AuthUser, Role } from '../types'
+import type { LoginRequest, RegistroRequest, TokenResponse, UsuarioResponse } from './dto'
 
-export async function login(email: string, password: string): Promise<string> {
-  const { data } = await http.post<TokenDto>('/api/auth/login', { correo: email, contrasena: password })
-  return data.token
+export async function login(correo: string, contrasena: string): Promise<TokenResponse> {
+  const { data } = await http.post<TokenResponse>('/api/auth/login', {
+    correo,
+    contrasena,
+  } satisfies LoginRequest)
+  return data
 }
 
-export async function getMe(): Promise<AuthUser> {
-  const { data } = await http.get<UserDto>('/api/usuarios/me')
-  return {
-    id: data.id,
-    name: data.nombre,
-    email: data.correo,
-    roles: data.roles as Role[],
-    active: data.activo,
-  }
+export async function registro(data: RegistroRequest): Promise<UsuarioResponse> {
+  const { data: responseData } = await http.post<UsuarioResponse>('/api/auth/registro', data)
+  return responseData
+}
+
+export async function getMe(): Promise<UsuarioResponse> {
+  const { data } = await http.get<UsuarioResponse>('/api/usuarios/me')
+  return data
 }

@@ -2,9 +2,13 @@ import { createContext } from 'react'
 import type { AuthUser, Role } from '../types'
 
 export interface AuthContextValue {
+  token: string | null
+  usuarioId: number | null
+  roles: Role[]
+  esOperador: boolean
   user: AuthUser | null
   isLoading: boolean
-  login: (email: string, password: string) => Promise<void>
+  login: (correo: string, contrasena: string) => Promise<void>
   logout: () => void
   hasRole: (role: Role) => boolean
 }

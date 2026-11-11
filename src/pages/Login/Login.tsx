@@ -8,20 +8,20 @@ import { useAuth } from '../../auth/useAuth'
 function Login() {
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const { user, login } = useAuth()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const { token, login } = useAuth()
+  const [correo, setCorreo] = useState('')
+  const [contrasena, setContrasena] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  if (user) return <Navigate to="/" replace />
+  if (token) return <Navigate to="/" replace />
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
     setError(null)
     setIsSubmitting(true)
     try {
-      await login(email, password)
+      await login(correo, contrasena)
       navigate('/', { replace: true })
     } catch (err) {
       setError(getErrorMessage(err, t('login.error')))
@@ -46,29 +46,31 @@ function Login() {
         <h1 className="text-xl font-bold text-gray-900">{t('login.title')}</h1>
         <p className="text-sm text-gray-500 mt-1">{t('login.subtitle')}</p>
 
-        <label className="block mt-6 text-sm font-medium text-gray-700" htmlFor="email">
+        <label className="block mt-6 text-sm font-medium text-gray-700" htmlFor="correo">
           {t('login.email')}
         </label>
         <input
-          id="email"
+          id="correo"
+          name="correo"
           type="email"
           required
           autoComplete="username"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
+          value={correo}
+          onChange={(event) => setCorreo(event.target.value)}
           className="mt-1 w-full border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900"
         />
 
-        <label className="block mt-4 text-sm font-medium text-gray-700" htmlFor="password">
+        <label className="block mt-4 text-sm font-medium text-gray-700" htmlFor="contrasena">
           {t('login.password')}
         </label>
         <input
-          id="password"
+          id="contrasena"
+          name="contrasena"
           type="password"
           required
           autoComplete="current-password"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
+          value={contrasena}
+          onChange={(event) => setContrasena(event.target.value)}
           className="mt-1 w-full border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900"
         />
 

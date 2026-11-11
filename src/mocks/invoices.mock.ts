@@ -1,4 +1,4 @@
-import type { InvoiceDto } from '../api/dto'
+import type { EstadoFactura, FacturaResponse } from '../api/dto'
 
 const invoice = (
   id: number,
@@ -6,9 +6,9 @@ const invoice = (
   end: string,
   kwh: number,
   tariff: number,
-  estado: InvoiceDto['estado'],
+  estado: EstadoFactura,
   due: string,
-): InvoiceDto => ({
+): FacturaResponse => ({
   id,
   medidorId: 1,
   periodoInicio: start,
@@ -17,10 +17,15 @@ const invoice = (
   estado,
   consumoAcumuladoKwh: kwh,
   tarifaValor: tariff,
+  tarifaVigenciaDesde: '2026-01-01',
+  tarifaVigenciaHasta: '2026-12-31',
+  fechaGeneracion: start,
   fechaVencimiento: due,
+  fechaPago: estado === 'PAGADA' ? due : null,
+  anomaliasNoResueltas: [],
 })
 
-export const invoicesMock: InvoiceDto[] = [
+export const invoicesMock: FacturaResponse[] = [
   invoice(5, '2026-09-01', '2026-09-30', 176.4, 650, 'PENDIENTE', '2026-10-30'),
   invoice(4, '2026-08-01', '2026-08-31', 188.4, 650, 'PAGADA', '2026-09-30'),
   invoice(3, '2026-07-01', '2026-07-31', 162, 650, 'VENCIDA', '2026-08-30'),
