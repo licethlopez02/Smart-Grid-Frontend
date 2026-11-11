@@ -71,7 +71,11 @@ function InvoiceDetail() {
                 />
                 <Field
                   label={t('invoiceDetail.tariffValidityLabel')}
-                  value={`${formatDate(invoice.tarifaVigenciaDesde)} – ${formatDate(invoice.tarifaVigenciaHasta)}`}
+                  value={
+                    invoice.tarifaVigenciaHasta
+                      ? `${formatDate(invoice.tarifaVigenciaDesde)} – ${formatDate(invoice.tarifaVigenciaHasta)}`
+                      : `${formatDate(invoice.tarifaVigenciaDesde)} – ${t('invoiceDetail.tariffOpenEnded')}`
+                  }
                 />
                 <Field
                   label={t('invoiceDetail.generationDateLabel')}

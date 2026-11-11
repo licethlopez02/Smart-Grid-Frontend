@@ -149,7 +149,8 @@
       "value": "Lectura",
       "reason": "Razón"
     },
-    "back": "Volver a facturas"
+    "back": "Volver a facturas",
+    "tariffOpenEnded": "sin fecha de fin"
   },
   "invoiceStatus": {
     "PENDIENTE": "Pendiente",

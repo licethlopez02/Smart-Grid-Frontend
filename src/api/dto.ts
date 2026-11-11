@@ -100,7 +100,7 @@ export interface TarifaResponse {
   id: number
   valor: number
   vigenciaDesde: string
-  vigenciaHasta: string
+  vigenciaHasta: string | null
 }
 
 export interface FacturaCreacionRequest {
@@ -133,7 +133,7 @@ export interface FacturaResponse {
   consumoAcumuladoKwh: number
   tarifaValor: number
   tarifaVigenciaDesde: string
-  tarifaVigenciaHasta: string
+  tarifaVigenciaHasta: string | null
   fechaGeneracion: string
   fechaVencimiento: string
   fechaPago: string | null
