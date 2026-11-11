@@ -4,11 +4,11 @@ import { Home, BarChart2, Bell, FileText, Zap, User, LogOut } from 'lucide-react
 import { useAuth } from '../auth/useAuth'
 import type { Role } from '../types'
 
-const navItems: { to: string; labelKey: string; icon: typeof Home; role: Role }[] = [
-  { to: '/', labelKey: 'nav.home', icon: Home, role: 'USUARIO' },
-  { to: '/consumption', labelKey: 'nav.consumption', icon: BarChart2, role: 'USUARIO' },
-  { to: '/alerts', labelKey: 'nav.alerts', icon: Bell, role: 'USUARIO' },
-  { to: '/invoices', labelKey: 'nav.invoices', icon: FileText, role: 'USUARIO' },
+const navItems: { to: string; labelKey: string; icon: typeof Home; role?: Role }[] = [
+  { to: '/', labelKey: 'nav.home', icon: Home },
+  { to: '/consumption', labelKey: 'nav.consumption', icon: BarChart2 },
+  { to: '/alerts', labelKey: 'nav.alerts', icon: Bell },
+  { to: '/invoices', labelKey: 'nav.invoices', icon: FileText },
 ]
 
 function MainLayout() {
@@ -37,7 +37,7 @@ function MainLayout() {
 
           <nav className="mt-4 px-3 flex flex-col gap-1">
             {navItems
-              .filter((item) => hasRole(item.role))
+              .filter((item) => !item.role || hasRole(item.role))
               .map(({ to, labelKey, icon: Icon }) => (
                 <NavLink
                   key={to}

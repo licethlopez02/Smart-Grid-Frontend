@@ -29,7 +29,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return Number.isFinite(parsed) ? parsed : null
   }, [payload])
 
-  const roles = useMemo<Role[]>(() => (payload?.roles ?? []) as Role[], [payload])
+  const { data: usuarioData = null, isLoading } = useQuery({
+    queryKey: ['me', token],
+    queryFn: getMe,
+    enabled: token !== null,
+    retry: false,
+  })
+
+  const roles = useMemo<Role[]>(() => {
+    if (usuarioData?.roles && usuarioData.roles.length > 0) {
+      return usuarioData.roles as Role[]
+    }
+    return (payload?.roles ?? []) as Role[]
+  }, [usuarioData, payload])
 
   const esOperador = useMemo(() => roles.includes('OPERADOR'), [roles])
 
@@ -50,13 +62,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     return () => clearTimeout(timer)
   }, [token, payload, logout])
-
-  const { data: usuarioData = null, isLoading } = useQuery({
-    queryKey: ['me', token],
-    queryFn: getMe,
-    enabled: token !== null,
-    retry: false,
-  })
 
   const login = useCallback(async (correo: string, contrasena: string) => {
     const tokenResponse = await loginRequest(correo, contrasena)

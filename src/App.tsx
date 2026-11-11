@@ -15,13 +15,11 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route element={<RequireAuth />}>
           <Route element={<MainLayout />}>
-            <Route element={<RequireAuth role="USUARIO" />}>
-              <Route path="/" element={<Home />} />
-              <Route path="/consumption" element={<Consumption />} />
-              <Route path="/alerts" element={<Alerts />} />
-              <Route path="/invoices" element={<Invoices />} />
-              <Route path="/invoices/:id" element={<InvoiceDetail />} />
-            </Route>
+            <Route path="/" element={<Home />} />
+            <Route path="/consumption" element={<Consumption />} />
+            <Route path="/alerts" element={<Alerts />} />
+            <Route path="/invoices" element={<Invoices />} />
+            <Route path="/invoices/:id" element={<InvoiceDetail />} />
           </Route>
         </Route>
       </Routes>
