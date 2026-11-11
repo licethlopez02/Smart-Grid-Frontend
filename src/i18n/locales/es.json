@@ -129,6 +129,7 @@
     "viewDetail": "Ver detalle"
   },
   "invoiceDetail": {
+    "title": "Factura",
     "subtitle": "Período de facturación",
     "billingInfo": "Información de facturación",
     "periodLabel": "Período",
