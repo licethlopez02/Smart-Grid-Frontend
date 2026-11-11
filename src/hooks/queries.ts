@@ -7,22 +7,39 @@ import { getInvoice, getMyInvoices } from '../api/invoices.api'
 import { getMyMeterId } from '../api/meters.api'
 import { getRange, toApiInstant, type Period } from '../utils/consumption'
 
-export function useMyMeterId() {
-  return useQuery({ queryKey: ['my-meter'], queryFn: getMyMeterId, staleTime: Infinity })
+/**
+ * Hook centralizado para obtener el ID del medidor activo.
+ *
+ * TODO: Actualmente el backend no expone un endpoint para listar los medidores de un usuario
+ * ni asociar automáticamente un medidor al usuario autenticado (ver docs/backend-contract.md:
+ * "NO existe endpoint para listar los medidores de un usuario ni para listar zonas").
+ * Por ahora se utiliza VITE_DEV_METER_ID configurado en config/env.ts.
+ * Cuando exista una fuente real en el backend (ej: GET /api/medidores/mio o endpoint de usuario),
+ * solo será necesario cambiar la lógica dentro de este hook.
+ */
+export function useMedidorActivo() {
+  return useQuery({
+    queryKey: ['medidor-activo'],
+    queryFn: getMyMeterId,
+    staleTime: Infinity,
+  })
 }
+
+// Alias de retrocompatibilidad
+export const useMyMeterId = useMedidorActivo
 
 // Runs a query that needs the user's meter id, and merges both loading/error states.
 function useMeterQuery<T>(key: unknown[], fetcher: (meterId: number) => Promise<T>, refetchInterval?: number) {
-  const meter = useMyMeterId()
+  const meter = useMedidorActivo()
   const meterId = meter.data
   const query = useQuery({
     queryKey: [...key, meterId],
     queryFn: () => fetcher(meterId as number),
-    enabled: meterId !== undefined,
+    enabled: typeof meterId === 'number' && !isNaN(meterId),
     refetchInterval,
   })
   const error = meter.error ?? query.error
-  return { data: query.data, error, isPending: !error && query.isPending }
+  return { data: query.data, error, isPending: meter.isPending || (!error && query.isPending) }
 }
 
 function useRange(period: Period) {

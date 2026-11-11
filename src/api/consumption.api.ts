@@ -1,32 +1,33 @@
 import { http } from './http'
-import { env } from '../config/env'
-import { buildReadingsMock } from '../mocks/readings.mock'
 import type { ConsumoResponse, LecturaResponse } from './dto'
-import type { Reading } from '../types'
 
-function inRange(readings: LecturaResponse[], from: string, to: string) {
-  const start = new Date(from).getTime()
-  const end = new Date(to).getTime()
-  return readings.filter((reading) => {
-    const time = new Date(reading.timestamp).getTime()
-    return time >= start && time < end
+export async function getReadings(
+  meterId: number,
+  desde?: string,
+  hasta?: string,
+): Promise<LecturaResponse[]> {
+  const { data } = await http.get<LecturaResponse[]>(`/api/medidores/${meterId}/lecturas`, {
+    params: { desde, hasta },
   })
+  return data
 }
 
-export async function getReadings(meterId: number, from: string, to: string): Promise<Reading[]> {
-  const dtos = env.useMocks.consumption
-    ? inRange(buildReadingsMock(meterId), from, to)
-    : (await http.get<LecturaResponse[]>(`/api/medidores/${meterId}/lecturas`, { params: { desde: from, hasta: to } })).data
-  return dtos.map((dto) => ({ timestamp: dto.timestamp, kwh: dto.valor }))
-}
-
-export async function getConsumptionTotal(meterId: number, from: string, to: string): Promise<number> {
-  if (env.useMocks.consumption) {
-    const total = inRange(buildReadingsMock(meterId), from, to).reduce((sum, reading) => sum + reading.valor, 0)
-    return Math.round(total * 100) / 100
-  }
+export async function getConsumption(
+  meterId: number,
+  desde?: string,
+  hasta?: string,
+): Promise<ConsumoResponse> {
   const { data } = await http.get<ConsumoResponse>(`/api/medidores/${meterId}/consumo`, {
-    params: { desde: from, hasta: to },
+    params: { desde, hasta },
   })
+  return data
+}
+
+export async function getConsumptionTotal(
+  meterId: number,
+  desde?: string,
+  hasta?: string,
+): Promise<number> {
+  const data = await getConsumption(meterId, desde, hasta)
   return data.consumoAcumulado
 }

@@ -90,33 +90,37 @@ function Consumption() {
       <Card className="mt-6">
         <h2 className="font-semibold text-gray-900">{t('consumption.detailTitle')}</h2>
         <AsyncState isPending={readings.isPending} error={readings.error}>
-          {tableRows.length > 0 && (
-            <table className="w-full mt-4 text-sm">
-              <thead>
-                <tr className="text-left text-gray-500">
-                  <th className="font-normal pb-2">{t('consumption.table.date')}</th>
-                  <th className="font-normal pb-2">{t('consumption.table.kwh')}</th>
-                  <th className="font-normal pb-2">{t('consumption.table.type')}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {tableRows.slice(0, visibleRows).map((point) => (
-                  <tr key={point.key} className="border-t border-gray-100">
-                    <td className="py-3 text-gray-900">{point.fullLabel}</td>
-                    <td className="py-3 text-gray-900">{formatKwh(point.kwh)}</td>
-                    <td className="py-3 text-gray-500">{t('consumption.table.typeValue')}</td>
+          {tableRows.length === 0 ? (
+            <p className="text-sm text-gray-500 py-6 text-center">{t('consumption.empty')}</p>
+          ) : (
+            <>
+              <table className="w-full mt-4 text-sm">
+                <thead>
+                  <tr className="text-left text-gray-500">
+                    <th className="font-normal pb-2">{t('consumption.table.date')}</th>
+                    <th className="font-normal pb-2">{t('consumption.table.kwh')}</th>
+                    <th className="font-normal pb-2">{t('consumption.table.type')}</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-          {visibleRows < tableRows.length && (
-            <button
-              onClick={() => setVisibleRows((previous) => previous + ROWS_PER_PAGE)}
-              className="text-blue-600 text-sm font-medium mt-4"
-            >
-              {t('consumption.showMore')}
-            </button>
+                </thead>
+                <tbody>
+                  {tableRows.slice(0, visibleRows).map((point) => (
+                    <tr key={point.key} className="border-t border-gray-100">
+                      <td className="py-3 text-gray-900">{point.fullLabel}</td>
+                      <td className="py-3 text-gray-900">{formatKwh(point.kwh)}</td>
+                      <td className="py-3 text-gray-500">{t('consumption.table.typeValue')}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              {visibleRows < tableRows.length && (
+                <button
+                  onClick={() => setVisibleRows((previous) => previous + ROWS_PER_PAGE)}
+                  className="text-blue-600 text-sm font-medium mt-4"
+                >
+                  {t('consumption.showMore')}
+                </button>
+              )}
+            </>
           )}
         </AsyncState>
       </Card>

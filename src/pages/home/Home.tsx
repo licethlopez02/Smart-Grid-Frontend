@@ -78,17 +78,21 @@ function Home() {
             </span>
           </div>
           <AsyncState isPending={readings.isPending} error={readings.error}>
-            <div className="h-64 mt-4">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={chartData}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-                  <XAxis dataKey="label" tick={{ fontSize: 12 }} tickLine={false} axisLine={{ stroke: '#e5e7eb' }} />
-                  <YAxis tick={{ fontSize: 12 }} tickLine={false} axisLine={false} />
-                  <Tooltip />
-                  <Line type="monotone" dataKey="kwh" stroke="#2563eb" strokeWidth={2} dot={{ r: 3, fill: '#2563eb' }} />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
+            {chartData.length === 0 ? (
+              <p className="text-sm text-gray-500 py-6 text-center">{t('consumption.empty')}</p>
+            ) : (
+              <div className="h-64 mt-4">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={chartData}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                    <XAxis dataKey="label" tick={{ fontSize: 12 }} tickLine={false} axisLine={{ stroke: '#e5e7eb' }} />
+                    <YAxis tick={{ fontSize: 12 }} tickLine={false} axisLine={false} />
+                    <Tooltip />
+                    <Line type="monotone" dataKey="kwh" stroke="#2563eb" strokeWidth={2} dot={{ r: 3, fill: '#2563eb' }} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            )}
             <p className="text-sm text-gray-500 mt-2">{t('home.chartCard.caption')}</p>
           </AsyncState>
         </Card>

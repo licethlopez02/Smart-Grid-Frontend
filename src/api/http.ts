@@ -49,10 +49,10 @@ export function getErrorMessage(error: unknown, fallback = 'Ha ocurrido un error
       return 'No autorizado. Por favor inicia sesión.'
     }
     if (status === 403) {
-      return 'Acceso denegado. No tienes permisos para realizar esta acción.'
+      return 'Acceso denegado. No tienes permisos para consultar este medidor o recurso.'
     }
     if (status === 404) {
-      return 'Recurso no encontrado.'
+      return 'El medidor o recurso solicitado no fue encontrado.'
     }
     if (status === 503) {
       return 'Servicio no disponible temporalmente.'
