@@ -6,7 +6,20 @@
     "logOut": "Cerrar sesión",
     "loading": "Cargando…",
     "loadError": "No se pudo cargar la información. Intenta de nuevo.",
-    "noAccess": "No tienes acceso a esta sección."
+    "noAccess": "No tienes acceso a esta sección.",
+    "kwh": "kWh",
+    "perKwh": "/ kWh",
+    "emptyValue": "—"
+  },
+  "errors": {
+    "unexpected": "Ha ocurrido un error inesperado.",
+    "unauthorized": "No autorizado. Por favor inicia sesión.",
+    "forbidden": "Acceso denegado. No tienes permisos para consultar este medidor o recurso.",
+    "notFound": "El medidor o recurso solicitado no fue encontrado.",
+    "unavailable": "Servicio no disponible temporalmente.",
+    "invoiceForbidden": "No tienes permiso para ver esta factura.",
+    "invoiceNotFound": "La factura solicitada no existe.",
+    "meterUnavailable": "Medidor no disponible."
   },
   "nav": {
     "home": "Inicio",
@@ -141,9 +154,6 @@
   "invoiceStatus": {
     "PENDIENTE": "Pendiente",
     "PAGADA": "Pagada",
-    "VENCIDA": "Vencida",
-    "pending": "Pendiente",
-    "paid": "Pagada",
-    "overdue": "Vencida"
+    "VENCIDA": "Vencida"
   }
 }

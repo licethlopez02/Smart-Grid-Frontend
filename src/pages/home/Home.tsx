@@ -35,7 +35,7 @@ function Home() {
                 <p className="text-sm text-gray-500 mt-1">{t('home.consumptionCard.period')}</p>
                 <p className="mt-4">
                   <span className="text-4xl font-bold text-blue-600">{formatKwh(total.data ?? 0)}</span>
-                  <span className="text-lg font-semibold text-blue-600 ml-1">kWh</span>
+                  <span className="text-lg font-semibold text-blue-600 ml-1">{t('common.kwh')}</span>
                 </p>
                 <p className="text-sm text-gray-500 mt-1">{t('home.consumptionCard.label')}</p>
               </div>
@@ -116,7 +116,7 @@ function Home() {
                         <InvoiceStatusBadge status={invoice.estado} />
                       </td>
                       <td className="py-3 text-gray-500">
-                        {invoice.fechaVencimiento ? formatDate(invoice.fechaVencimiento) : '—'}
+                        {invoice.fechaVencimiento ? formatDate(invoice.fechaVencimiento) : t('common.emptyValue')}
                       </td>
                     </tr>
                   ))}

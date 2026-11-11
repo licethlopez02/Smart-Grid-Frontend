@@ -52,7 +52,7 @@ function Consumption() {
           <h2 className="font-semibold text-gray-900">{t(`consumption.accumulatedTitle.${period}`)}</h2>
           <p className="mt-4">
             <span className="text-4xl font-bold text-blue-600">{formatKwh(total.data ?? 0)}</span>
-            <span className="text-lg font-semibold text-blue-600 ml-1">kWh</span>
+            <span className="text-lg font-semibold text-blue-600 ml-1">{t('common.kwh')}</span>
           </p>
           <p className="text-sm text-gray-500 mt-1">{t('consumption.total')}</p>
         </AsyncState>

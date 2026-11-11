@@ -63,11 +63,11 @@ function InvoiceDetail() {
                 />
                 <Field
                   label={t('invoiceDetail.consumptionLabel')}
-                  value={`${formatKwh(invoice.consumoAcumuladoKwh)} kWh`}
+                  value={`${formatKwh(invoice.consumoAcumuladoKwh)} ${t('common.kwh')}`}
                 />
                 <Field
                   label={t('invoiceDetail.tariffLabel')}
-                  value={`${formatCurrency(invoice.tarifaValor)} / kWh`}
+                  value={`${formatCurrency(invoice.tarifaValor)} ${t('common.perKwh')}`}
                 />
                 <Field
                   label={t('invoiceDetail.tariffValidityLabel')}
@@ -116,7 +116,7 @@ function InvoiceDetail() {
                         <tr key={anomalia.anomaliaId} className="border-b border-gray-100 last:border-b-0">
                           <td className="py-2.5 text-gray-900 font-mono text-xs">#{anomalia.anomaliaId}</td>
                           <td className="py-2.5 text-gray-600">{formatDateTime(anomalia.momento)}</td>
-                          <td className="py-2.5 text-gray-900 font-medium">{formatKwh(anomalia.valor)} kWh</td>
+                          <td className="py-2.5 text-gray-900 font-medium">{formatKwh(anomalia.valor)} {t('common.kwh')}</td>
                           <td className="py-2.5 text-gray-600">{anomalia.razon}</td>
                         </tr>
                       ))}

@@ -5,6 +5,7 @@ import { getAnomalies, getPendingAnomalies, resolveAnomaly } from '../api/alerts
 import { getConsumptionTotal, getReadings } from '../api/consumption.api'
 import { getInvoice, getMyInvoices } from '../api/invoices.api'
 import { getMyMeterId } from '../api/meters.api'
+import i18n from '../i18n'
 import { getRange, toApiInstant, type Period } from '../utils/consumption'
 import { getErrorMessage } from '../api/http'
 
@@ -82,7 +83,7 @@ export function useResolveAnomaly() {
 
   return useMutation({
     mutationFn: (anomalyId: number) => {
-      if (typeof meterId !== 'number') throw new Error('Medidor no disponible.')
+      if (typeof meterId !== 'number') throw new Error(i18n.t('errors.meterUnavailable'))
       return resolveAnomaly(meterId, anomalyId)
     },
     onSuccess: () => {

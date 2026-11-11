@@ -1,4 +1,5 @@
 import axios from 'axios'
+import i18n from '../i18n'
 import { http } from './http'
 import type { FacturaResponse } from './dto'
 
@@ -14,10 +15,10 @@ export async function getInvoice(id: number): Promise<FacturaResponse> {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response?.status === 403) {
-        throw new Error('No tienes permiso para ver esta factura.', { cause: error })
+        throw new Error(i18n.t('errors.invoiceForbidden'), { cause: error })
       }
       if (error.response?.status === 404) {
-        throw new Error('La factura solicitada no existe.', { cause: error })
+        throw new Error(i18n.t('errors.invoiceNotFound'), { cause: error })
       }
     }
     throw error

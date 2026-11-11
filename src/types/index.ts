@@ -21,5 +21,3 @@ export interface ConsumptionPoint {
 }
 
 export type AlertStatus = 'pending' | 'resolved'
-
-export type InvoiceStatus = 'pending' | 'paid' | 'overdue'

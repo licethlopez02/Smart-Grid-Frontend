@@ -72,7 +72,7 @@ function Alerts() {
               <tbody>
                 {filtered.map((anomaly) => (
                   <tr key={anomaly.id} className="border-t border-gray-100">
-                    <td className="py-3 text-gray-900">{anomaly.valor} kWh</td>
+                    <td className="py-3 text-gray-900">{anomaly.valor} {t('common.kwh')}</td>
                     <td className="py-3 text-gray-700">{anomaly.razon}</td>
                     <td className="py-3 text-gray-500">{formatDateTime(anomaly.timestamp)}</td>
                     <td className="py-3">

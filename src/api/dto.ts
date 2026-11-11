@@ -70,8 +70,8 @@ export interface LecturaResultadoResponse {
 
 export interface ConsumoResponse {
   consumoAcumulado: number
-  desde?: string
-  hasta?: string
+  desde: string
+  hasta: string
 }
 
 export interface ConsumoPorZonaResponse {

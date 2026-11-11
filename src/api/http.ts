@@ -1,4 +1,5 @@
 import axios from 'axios'
+import i18n from '../i18n'
 import { tokenStorage } from '../auth/tokenStorage'
 
 export const http = axios.create({
@@ -37,7 +38,7 @@ http.interceptors.response.use(
   },
 )
 
-export function getErrorMessage(error: unknown, fallback = 'Ha ocurrido un error inesperado.'): string {
+export function getErrorMessage(error: unknown, fallback = i18n.t('errors.unexpected')): string {
   if (axios.isAxiosError(error)) {
     const data = error.response?.data as { mensaje?: string } | undefined
     if (data && typeof data.mensaje === 'string' && data.mensaje.trim() !== '') {
@@ -46,16 +47,16 @@ export function getErrorMessage(error: unknown, fallback = 'Ha ocurrido un error
 
     const status = error.response?.status
     if (status === 401) {
-      return 'No autorizado. Por favor inicia sesión.'
+      return i18n.t('errors.unauthorized')
     }
     if (status === 403) {
-      return 'Acceso denegado. No tienes permisos para consultar este medidor o recurso.'
+      return i18n.t('errors.forbidden')
     }
     if (status === 404) {
-      return 'El medidor o recurso solicitado no fue encontrado.'
+      return i18n.t('errors.notFound')
     }
     if (status === 503) {
-      return 'Servicio no disponible temporalmente.'
+      return i18n.t('errors.unavailable')
     }
   }
 

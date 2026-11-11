@@ -45,7 +45,7 @@ function Invoices() {
                         <InvoiceStatusBadge status={invoice.estado} />
                       </td>
                       <td className="py-3.5 text-gray-500">
-                        {invoice.fechaVencimiento ? formatDate(invoice.fechaVencimiento) : '—'}
+                        {invoice.fechaVencimiento ? formatDate(invoice.fechaVencimiento) : t('common.emptyValue')}
                       </td>
                       <td className="py-3.5 text-right">
                         <Link
