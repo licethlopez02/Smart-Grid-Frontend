@@ -17,19 +17,27 @@ Usuarios
 - GET /api/usuarios/me -> UsuarioResponse
 - PUT /api/usuarios/me/contrasena body {contrasenaActual, contrasenaNueva (mín. 8)} -> 204
 - (OPERADOR) GET /api/usuarios; GET /api/usuarios/{id}; PUT /api/usuarios/{id}/roles {roles: string[]}; PATCH /api/usuarios/{id}/estado {activo: boolean}
+  - GET /api/usuarios devuelve UsuarioResponse[] sin paginación ni filtros.
 
 Medición (dueño del medidor u OPERADOR, salvo indicación). desde/hasta opcionales, ISO con hora, ej. 2026-10-01T00:00:00Z, inclusivos.
 - POST /api/medidores (OPERADOR) body {id, ubicacion, usuarioId, propiedad} -> MedidorResponse, 201
+  - `id` obligatorio (lo envía el cliente). `ubicacion` obligatoria, no vacía. `usuarioId` opcional. `propiedad` opcional; si falta, el backend usa la ubicación.
+  - Errores 400 con `{ mensaje }`: "Ya existe un medidor con id X"; "El usuario no existe o está inactivo".
+  - No hay comprobación de propiedad repetida. No hay endpoint para reasignar ni para listar medidores.
+- GET /api/medidores/mios -> MedidorResponse[] (requiere sesión; toma el id del usuario del JWT y devuelve un arreglo de MedidorResponse { id, ubicacion, usuarioId, propiedad } con los medidores de ese usuario; arreglo vacío si no tiene)
 - POST /api/medidores/{medidorId}/lecturas body {valor, timestamp} -> {esAnomalia: boolean, razon: string}. Valor negativo: se descarta y se genera alerta de sensor defectuoso (no se guarda anomalía).
 - GET /api/medidores/{medidorId}/lecturas?desde&hasta -> LecturaResponse[]
 - GET /api/medidores/{medidorId}/consumo?desde&hasta -> ConsumoResponse (acumulado del rango; NO hay agregación por día/mes)
 - GET /api/medidores/{medidorId}/anomalias -> AnomaliaResponse[]
 - GET /api/medidores/{medidorId}/anomalias/pendientes?desde&hasta -> AnomaliaResponse[]
 - POST /api/medidores/{medidorId}/anomalias/{anomaliaId}/resolver -> 204
-- GET /api/medidores/consumo-por-zona?zona&desde&hasta (OPERADOR) -> [{zona, consumoAcumulado}] (zona = ubicacion, comparación sin distinguir mayúsculas)
+- GET /api/medidores/consumo-por-zona?zona=&desde=&hasta= (OPERADOR) -> [{zona, consumoAcumulado}]
+  - `zona` obligatoria; `desde` y `hasta` opcionales (instante ISO, ej. 2026-11-01T00:00:00Z). Comparación de zona sin distinguir mayúsculas; sin recortar espacios.
+  - Si ninguna ubicación coincide: 200 con []. Zona en blanco: 400 "La zona es obligatoria".
+  - El consumo es la suma de los valores de las lecturas del rango (ambos extremos inclusivos).
 - DELETE /api/medidores/{medidorId} (OPERADOR) -> 202
 - POST /api/anomalias/{anomaliaId}/resolver (OPERADOR) -> 204
-- NO existe endpoint para listar los medidores de un usuario ni para listar zonas.
+- NO existe endpoint para listar zonas.
 
 Facturación
 - GET /api/facturas/mias -> FacturaResponse[] (por sub del JWT)
@@ -80,4 +88,4 @@ FacturaResponse {id, medidorId, periodoInicio, periodoFin, montoTotal, estado, c
 - Cambiar la contraseña **no** invalida el token actual.
 
 ## Lo que NO existe
-CORS, SSE/WebSocket/correo para alertas (solo polling), campo tipo en anomalías, listado de medidores por usuario, listado de zonas, edición/borrado de tarifas.
+CORS, SSE/WebSocket/correo para alertas (solo polling), campo tipo en anomalías, listado de zonas, edición/borrado de tarifas.

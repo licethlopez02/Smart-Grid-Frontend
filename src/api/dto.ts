@@ -41,8 +41,8 @@ export interface TokenResponse {
 export interface MedidorRequest {
   id: number
   ubicacion: string
-  usuarioId: number | null
-  propiedad: string
+  usuarioId?: number | null
+  propiedad?: string
 }
 
 export interface MedidorResponse {
@@ -74,7 +74,7 @@ export interface ConsumoResponse {
   hasta: string
 }
 
-export interface ConsumoPorZonaResponse {
+export interface ConsumoZonaResponse {
   zona: string
   consumoAcumulado: number
 }

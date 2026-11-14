@@ -10,7 +10,8 @@
     "kwh": "kWh",
     "perKwh": "/ kWh",
     "emptyValue": "—",
-    "comingSoon": "Próximamente"
+    "comingSoon": "Próximamente",
+    "noMeter": "Aún no tienes un medidor asociado. Contacta al operador de red."
   },
   "errors": {
     "unexpected": "Ha ocurrido un error inesperado.",
@@ -34,10 +35,47 @@
   },
   "operator": {
     "registerMeter": {
-      "title": "Registrar medidor"
+      "title": "Registrar medidor",
+      "subtitle": "Completa los datos para dar de alta un nuevo medidor en el sistema.",
+      "idLabel": "Identificador del medidor",
+      "idHelp": "Número entero mayor a 0.",
+      "locationLabel": "Ubicación (zona)",
+      "locationHelp": "Se usa para agrupar el consumo por zona.",
+      "propertyLabel": "Propiedad / predio",
+      "propertyHelp": "Si lo dejas vacío se usa la ubicación.",
+      "userLabel": "Usuario",
+      "userPlaceholder": "Sin usuario asociado",
+      "userLoadError": "No se pudieron cargar los usuarios.",
+      "submit": "Registrar medidor",
+      "submitting": "Registrando…",
+      "successTitle": "Medidor registrado correctamente",
+      "successId": "ID",
+      "successLocation": "Ubicación",
+      "successProperty": "Propiedad",
+      "successUser": "Usuario",
+      "successNoUser": "Sin usuario asociado",
+      "registerAnother": "Registrar otro medidor",
+      "validationId": "El identificador debe ser un número entero mayor a 0.",
+      "validationLocation": "La ubicación no puede estar vacía."
     },
     "consumptionByZone": {
-      "title": "Consumo por zona"
+      "title": "Consumo por zona",
+      "subtitle": "Consulta el consumo acumulado de todos los medidores de una zona.",
+      "zoneLabel": "Zona",
+      "zoneHelp": "Escribe la ubicación con la que se registraron los medidores.",
+      "fromLabel": "Desde",
+      "toLabel": "Hasta",
+      "submit": "Consultar",
+      "submitting": "Consultando…",
+      "validationZone": "La zona no puede estar vacía.",
+      "validationDateRange": "La fecha de inicio no puede ser posterior a la fecha de fin.",
+      "resultZone": "Zona",
+      "resultConsumption": "Consumo acumulado",
+      "resultRange": "Período consultado",
+      "resultRangeFrom": "desde",
+      "resultRangeTo": "hasta",
+      "resultRangeAll": "Todo el historial",
+      "empty": "No hay medidores registrados en esa zona."
     }
   },
   "login": {
