@@ -9,7 +9,8 @@
     "noAccess": "No tienes acceso a esta sección.",
     "kwh": "kWh",
     "perKwh": "/ kWh",
-    "emptyValue": "—"
+    "emptyValue": "—",
+    "comingSoon": "Próximamente"
   },
   "errors": {
     "unexpected": "Ha ocurrido un error inesperado.",
@@ -27,7 +28,17 @@
     "home": "Inicio",
     "consumption": "Consumo",
     "alerts": "Alertas",
-    "invoices": "Facturas"
+    "invoices": "Facturas",
+    "registerMeter": "Registrar medidor",
+    "consumptionByZone": "Consumo por zona"
+  },
+  "operator": {
+    "registerMeter": {
+      "title": "Registrar medidor"
+    },
+    "consumptionByZone": {
+      "title": "Consumo por zona"
+    }
   },
   "login": {
     "title": "Iniciar sesión",
