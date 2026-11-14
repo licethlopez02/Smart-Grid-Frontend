@@ -19,7 +19,9 @@
     "unavailable": "Servicio no disponible temporalmente.",
     "invoiceForbidden": "No tienes permiso para ver esta factura.",
     "invoiceNotFound": "La factura solicitada no existe.",
-    "meterUnavailable": "Medidor no disponible."
+    "meterUnavailable": "Medidor no disponible.",
+    "renderTitle": "Ha ocurrido un error inesperado en la aplicación.",
+    "renderBack": "Volver al inicio"
   },
   "nav": {
     "home": "Inicio",

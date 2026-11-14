@@ -53,5 +53,31 @@ TarifaResponse {id, valor, vigenciaDesde, vigenciaHasta}
 AnomaliaFacturada {anomaliaId, valor, momento, razon}
 FacturaResponse {id, medidorId, periodoInicio, periodoFin, montoTotal, estado, consumoAcumuladoKwh, tarifaValor, tarifaVigenciaDesde, tarifaVigenciaHasta, fechaGeneracion, fechaVencimiento, fechaPago | null, anomaliasNoResueltas: AnomaliaFacturada[]}
 
+## Notas de comportamiento del backend
+
+### Campos nullable
+- `TarifaResponse.vigenciaHasta` y `FacturaResponse.tarifaVigenciaHasta` pueden ser `null` (tarifa sin fecha de fin).
+
+### Validación de período para facturar
+- La primera lectura del historial debe ser `<= periodoInicio` a las `00:00:00Z` y la última `>= periodoFin` a las `23:59:59Z` (UTC).
+- La tarifa debe cumplir `vigenciaDesde <= periodoFin <= vigenciaHasta` (o no tener fecha de fin).
+- Si falla, `409` con `"No se puede generar la factura del medidor N: el período está incompleto o la tarifa no está vigente."`.
+
+### Cálculo de consumo y monto
+- Consumo = suma de los valores de las lecturas con `timestamp` dentro de `[desde, hasta]`, ambos inclusivos.
+- Monto de factura = consumo × tarifa.
+
+### Detección de anomalías
+- Cada lectura nueva se compara con el promedio de todo el historial del medidor.
+- Es anomalía si `|valor - promedio| / promedio > 0.5` (estricto).
+- La primera lectura nunca es anomalía.
+- Si el promedio es `0`, cualquier lectura positiva es anomalía.
+
+### Registro y contraseña
+- Registro con correo repetido: `409`.
+- Cambio de contraseña con la actual incorrecta: `400` `"La contraseña actual es incorrecta"`.
+- Una contraseña de menos de 8 caracteres da `400` con un mensaje técnico en inglés; por eso el front valida el largo antes de enviar.
+- Cambiar la contraseña **no** invalida el token actual.
+
 ## Lo que NO existe
 CORS, SSE/WebSocket/correo para alertas (solo polling), campo tipo en anomalías, listado de medidores por usuario, listado de zonas, edición/borrado de tarifas.
