@@ -1,14 +1,18 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { Home, BarChart2, Bell, FileText, Zap, User, LogOut } from 'lucide-react'
+import { Home, BarChart2, Bell, FileText, Zap, User, LogOut, PlusCircle, MapPin } from 'lucide-react'
 import { useAuth } from '../auth/useAuth'
-import type { Role } from '../types'
 
-const navItems: { to: string; labelKey: string; icon: typeof Home; role?: Role }[] = [
+const userNavItems = [
   { to: '/', labelKey: 'nav.home', icon: Home },
   { to: '/consumption', labelKey: 'nav.consumption', icon: BarChart2 },
   { to: '/alerts', labelKey: 'nav.alerts', icon: Bell },
   { to: '/invoices', labelKey: 'nav.invoices', icon: FileText },
+]
+
+const operatorNavItems = [
+  { to: '/operator/meters/new', labelKey: 'nav.registerMeter', icon: PlusCircle },
+  { to: '/operator/zones', labelKey: 'nav.consumptionByZone', icon: MapPin },
 ]
 
 function MainLayout() {
@@ -20,6 +24,9 @@ function MainLayout() {
     logout()
     navigate('/login', { replace: true })
   }
+
+  const isUser = hasRole('USUARIO')
+  const isOperator = hasRole('OPERADOR')
 
   return (
     <div className="flex min-h-screen bg-gray-50">
@@ -36,9 +43,8 @@ function MainLayout() {
           </div>
 
           <nav className="mt-4 px-3 flex flex-col gap-1">
-            {navItems
-              .filter((item) => !item.role || hasRole(item.role))
-              .map(({ to, labelKey, icon: Icon }) => (
+            {isUser &&
+              userNavItems.map(({ to, labelKey, icon: Icon }) => (
                 <NavLink
                   key={to}
                   to={to}
@@ -53,6 +59,26 @@ function MainLayout() {
                   {t(labelKey)}
                 </NavLink>
               ))}
+
+            {isOperator && (
+              <>
+                {isUser && <div className="border-t border-white/10 my-2" />}
+                {operatorNavItems.map(({ to, labelKey, icon: Icon }) => (
+                  <NavLink
+                    key={to}
+                    to={to}
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${
+                        isActive ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-white/5 hover:text-white'
+                      }`
+                    }
+                  >
+                    <Icon size={18} />
+                    {t(labelKey)}
+                  </NavLink>
+                ))}
+              </>
+            )}
           </nav>
         </div>
 

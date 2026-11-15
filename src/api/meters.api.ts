@@ -1,15 +1,14 @@
-import { env } from '../config/env'
+import { http } from './http'
+import type { MedidorRequest, MedidorResponse } from './dto'
 
-/**
- * Obtiene el ID del medidor asociado al usuario.
- *
- * TODO: El backend no implementa actualmente un endpoint para listar los medidores
- * de un usuario ni para obtener el medidor asignado (ver docs/backend-contract.md:
- * "NO existe endpoint para listar los medidores de un usuario ni para listar zonas").
- * Por el momento se utiliza el valor de desarrollo VITE_DEV_METER_ID definido en config/env.ts.
- * Cuando el backend añada soporte para consultar el medidor propio (por ejemplo GET /api/medidores/mio),
- * se debe actualizar esta función.
- */
-export async function getMyMeterId(): Promise<number> {
-  return env.devMeterId
+/** GET /api/medidores/mios — medidores asociados al usuario autenticado */
+export async function getMyMeters(): Promise<MedidorResponse[]> {
+  const { data } = await http.get<MedidorResponse[]>('/medidores/mios')
+  return data
+}
+
+/** POST /api/medidores — solo OPERADOR */
+export async function registrarMedidor(data: MedidorRequest): Promise<MedidorResponse> {
+  const res = await http.post<MedidorResponse>('/medidores', data)
+  return res.data
 }
