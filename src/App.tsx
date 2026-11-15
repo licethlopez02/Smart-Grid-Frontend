@@ -34,10 +34,10 @@ function App() {
           <Route element={<MainLayout />}>
             {/* Account: any authenticated session */}
             <Route path="/account" element={<Account />} />
+            <Route path="/" element={<HomeRedirect />} />
 
             {/* User-only routes */}
             <Route element={<RequireAuth role="USUARIO" />}>
-              <Route path="/" element={<HomeRedirect />} />
               <Route path="/consumption" element={<Consumption />} />
               <Route path="/alerts" element={<Alerts />} />
               <Route path="/invoices" element={<Invoices />} />

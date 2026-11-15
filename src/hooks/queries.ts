@@ -104,7 +104,8 @@ export function useResolveAnomaly() {
     },
     onSuccess: () => {
       // Invalidate all anomaly queries so the list refreshes.
-      void queryClient.invalidateQueries({ queryKey: ['anomalies', meterId] })
+      void queryClient.invalidateQueries({ queryKey: ['anomalies'] })
+      void queryClient.invalidateQueries({ queryKey: ['anomalies-pending'] })
     },
   })
 }
@@ -142,7 +143,13 @@ export function useInvoice(id: number) {
     queryFn: () => getInvoice(id),
     enabled: Number.isFinite(id) && id > 0,
     retry: (failureCount, error) => {
-      if (axios.isAxiosError(error) && (error.response?.status === 403 || error.response?.status === 404)) {
+      if (
+        axios.isAxiosError(error) &&
+        (error.response?.status === 400 || error.response?.status === 403 || error.response?.status === 404)
+      ) {
+        return false
+      }
+      if (error instanceof Error && !axios.isAxiosError(error)) {
         return false
       }
       return failureCount < 2

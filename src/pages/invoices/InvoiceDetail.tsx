@@ -22,7 +22,11 @@ function InvoiceDetail() {
   const { t } = useTranslation()
   const { id } = useParams()
   const invoiceId = Number(id)
-  const { data: invoice, isPending, error } = useInvoice(invoiceId)
+  const isInvalidId = !Number.isFinite(invoiceId) || invoiceId <= 0
+  const { data: invoice, isPending, error } = useInvoice(isInvalidId ? 0 : invoiceId)
+
+  const effectiveError = isInvalidId ? new Error(t('errors.invoiceNotFound')) : error
+  const anomalias = invoice?.anomaliasNoResueltas ?? []
 
   return (
     <div>
@@ -33,7 +37,7 @@ function InvoiceDetail() {
         <ArrowLeft size={16} /> {t('invoiceDetail.back')}
       </Link>
 
-      <AsyncState isPending={isPending} error={error}>
+      <AsyncState isPending={!isInvalidId && isPending} error={effectiveError}>
         {invoice && (
           <div className="space-y-6 max-w-3xl">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -100,7 +104,7 @@ function InvoiceDetail() {
                 </h2>
               </div>
 
-              {invoice.anomaliasNoResueltas.length === 0 ? (
+              {anomalias.length === 0 ? (
                 <p className="text-sm text-gray-500 py-3">
                   {t('invoiceDetail.anomaliesEmpty')}
                 </p>
@@ -116,7 +120,7 @@ function InvoiceDetail() {
                       </tr>
                     </thead>
                     <tbody>
-                      {invoice.anomaliasNoResueltas.map((anomalia) => (
+                      {anomalias.map((anomalia) => (
                         <tr key={anomalia.anomaliaId} className="border-b border-gray-100 last:border-b-0">
                           <td className="py-2.5 text-gray-900 font-mono text-xs">#{anomalia.anomaliaId}</td>
                           <td className="py-2.5 text-gray-600">{formatDateTime(anomalia.momento)}</td>

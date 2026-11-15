@@ -4,22 +4,10 @@ import AsyncState from '../../components/AsyncState'
 import Card from '../../components/Card'
 import { getErrorMessage } from '../../api/http'
 import { useConsumptionByZone, type ConsumptionByZoneParams } from '../../hooks/queries'
-import { TIMEZONE, toApiInstant } from '../../utils/consumption'
+import { toApiInstant } from '../../utils/consumption'
 import { formatDate, formatKwh } from '../../utils/format'
 
 // ── date helpers ──────────────────────────────────────────────────────────────
-
-/** Returns 'YYYY-MM' for the current month in America/Bogota. */
-function currentMonthValue(): string {
-  const now = new Date()
-  const fmt = new Intl.DateTimeFormat('en-CA', {
-    timeZone: TIMEZONE,
-    year: 'numeric',
-    month: '2-digit',
-  })
-  // en-CA gives YYYY-MM-DD; we only need YYYY-MM
-  return fmt.format(now).slice(0, 7)
-}
 
 /** Converts a 'YYYY-MM-DD' date string to an ISO instant at start-of-day (00:00:00) in Bogota. */
 function toStartOfDay(dateStr: string): string {
@@ -42,12 +30,12 @@ function monthBounds(ym: string): { first: string; last: string } {
 
 /** Converts a 'YYYY-MM' month selector value to 'YYYY-MM-DD' first day. */
 function monthToFirstDay(ym: string): string {
-  return monthBounds(ym).first
+  return ym ? monthBounds(ym).first : ''
 }
 
 /** Converts a 'YYYY-MM' month selector value to 'YYYY-MM-DD' last day. */
 function monthToLastDay(ym: string): string {
-  return monthBounds(ym).last
+  return ym ? monthBounds(ym).last : ''
 }
 
 // ── main component ────────────────────────────────────────────────────────────
@@ -55,12 +43,10 @@ function monthToLastDay(ym: string): string {
 function ConsumptionByZone() {
   const { t } = useTranslation()
 
-  const currentMonth = currentMonthValue()
-
   // form fields
   const [zone, setZone] = useState('')
-  const [fromMonth, setFromMonth] = useState(currentMonth)
-  const [toMonth, setToMonth] = useState(currentMonth)
+  const [fromMonth, setFromMonth] = useState('')
+  const [toMonth, setToMonth] = useState('')
 
   // committed params (null = not yet queried)
   const [queryParams, setQueryParams] = useState<ConsumptionByZoneParams | null>(null)
@@ -78,19 +64,18 @@ function ConsumptionByZone() {
       return
     }
 
-    // Convert month pickers → ISO instants
-    const desdeDate = monthToFirstDay(fromMonth)
-    const hastaDate = monthToLastDay(toMonth)
-
-    if (desdeDate > hastaDate) {
+    if (fromMonth && toMonth && fromMonth > toMonth) {
       setClientError(t('operator.consumptionByZone.validationDateRange'))
       return
     }
 
+    const desdeIso = fromMonth ? toStartOfDay(monthToFirstDay(fromMonth)) : undefined
+    const hastaIso = toMonth ? toEndOfDay(monthToLastDay(toMonth)) : undefined
+
     setQueryParams({
       zona: trimmedZone,
-      desde: toStartOfDay(desdeDate),
-      hasta: toEndOfDay(hastaDate),
+      ...(desdeIso ? { desde: desdeIso } : {}),
+      ...(hastaIso ? { hasta: hastaIso } : {}),
     })
   }
 
@@ -185,9 +170,14 @@ function ConsumptionByZone() {
               ) : (
                 <div className="space-y-3">
                   {result.data.map((item) => {
-                    const rangeLabel = queryParams.desde && queryParams.hasta
-                      ? `${formatDate(queryParams.desde)} – ${formatDate(queryParams.hasta)}`
-                      : t('operator.consumptionByZone.resultRangeAll')
+                    const rangeLabel =
+                      queryParams.desde && queryParams.hasta
+                        ? `${formatDate(queryParams.desde)} – ${formatDate(queryParams.hasta)}`
+                        : queryParams.desde
+                          ? `${t('operator.consumptionByZone.resultRangeFrom')} ${formatDate(queryParams.desde)}`
+                          : queryParams.hasta
+                            ? `${t('operator.consumptionByZone.resultRangeTo')} ${formatDate(queryParams.hasta)}`
+                            : t('operator.consumptionByZone.resultRangeAll')
 
                     return (
                       <Card key={item.zona}>

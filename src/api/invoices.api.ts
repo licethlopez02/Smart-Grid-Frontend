@@ -14,11 +14,12 @@ export async function getInvoice(id: number): Promise<FacturaResponse> {
     return data
   } catch (error) {
     if (axios.isAxiosError(error)) {
+      const serverMsg = (error.response?.data as { mensaje?: string } | undefined)?.mensaje
       if (error.response?.status === 403) {
-        throw new Error(i18n.t('errors.invoiceForbidden'), { cause: error })
+        throw new Error(serverMsg || i18n.t('errors.invoiceForbidden'), { cause: error })
       }
-      if (error.response?.status === 404) {
-        throw new Error(i18n.t('errors.invoiceNotFound'), { cause: error })
+      if (error.response?.status === 404 || error.response?.status === 400) {
+        throw new Error(serverMsg || i18n.t('errors.invoiceNotFound'), { cause: error })
       }
     }
     throw error

@@ -1,0 +1,17 @@
+warning: in the working copy of 'src/App.tsx', LF will be replaced by CRLF the next time Git touches it
+[1mdiff --git a/src/App.tsx b/src/App.tsx[m
+[1mindex 158907e..1a0db01 100644[m
+[1m--- a/src/App.tsx[m
+[1m+++ b/src/App.tsx[m
+[36m@@ -34,10 +34,10 @@[m [mfunction App() {[m
+           <Route element={<MainLayout />}>[m
+             {/* Account: any authenticated session */}[m
+             <Route path="/account" element={<Account />} />[m
+[32m+[m[32m            <Route path="/" element={<HomeRedirect />} />[m
+ [m
+             {/* User-only routes */}[m
+             <Route element={<RequireAuth role="USUARIO" />}>[m
+[31m-              <Route path="/" element={<HomeRedirect />} />[m
+               <Route path="/consumption" element={<Consumption />} />[m
+               <Route path="/alerts" element={<Alerts />} />[m
+               <Route path="/invoices" element={<Invoices />} />[m

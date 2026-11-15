@@ -87,5 +87,11 @@ FacturaResponse {id, medidorId, periodoInicio, periodoFin, montoTotal, estado, c
 - Una contraseña de menos de 8 caracteres da `400` con un mensaje técnico en inglés; por eso el front valida el largo antes de enviar.
 - Cambiar la contraseña **no** invalida el token actual.
 
+### Precisiones y aclaraciones del contrato
+- **Errores 401 y 403 de Spring Security**: no traen cuerpo JSON (solo los errores de la aplicación traen `{"mensaje": "..."}`); deben manejarse únicamente por código de estado HTTP.
+- **Factura inexistente**: actualmente `GET /api/facturas/{id}` con id inexistente responde `400` (se corregirá a `404` más adelante).
+- **Lectura con valor negativo**: `POST /api/medidores/{id}/lecturas` con un valor negativo responde `200` con `{ "esAnomalia": false, "razon": "..." }` (se descarta y se genera alerta de sensor defectuoso, sin registrar anomalía).
+- **Endpoints existentes no usados en el frontend**: los endpoints `GET /api/usuarios/{id}`, `PUT /api/usuarios/{id}/roles`, `PATCH /api/usuarios/{id}/estado`, `DELETE /api/medidores/{id}` y `POST /api/facturas/{id}/pago` existen en el backend pero NO se usan en el frontend por estar fuera de Requisitos_G9.
+
 ## Lo que NO existe
 CORS, SSE/WebSocket/correo para alertas (solo polling), campo tipo en anomalías, listado de zonas, edición/borrado de tarifas.
