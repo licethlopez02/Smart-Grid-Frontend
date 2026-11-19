@@ -45,6 +45,7 @@
       "propertyHelp": "Si lo dejas vacío se usa la ubicación.",
       "userLabel": "Usuario",
       "userPlaceholder": "Sin usuario asociado",
+      "userNoResults": "Sin resultados",
       "userLoadError": "No se pudieron cargar los usuarios.",
       "submit": "Registrar medidor",
       "submitting": "Registrando…",
