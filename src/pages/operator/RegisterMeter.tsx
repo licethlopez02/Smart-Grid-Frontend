@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { CheckCircle } from 'lucide-react'
 import AsyncState from '../../components/AsyncState'
 import Card from '../../components/Card'
+import UserCombobox from '../../components/UserCombobox'
 import { getErrorMessage } from '../../api/http'
 import type { MedidorResponse, UsuarioResponse } from '../../api/dto'
 import { useRegisterMeter, useUsers } from '../../hooks/queries'
@@ -224,19 +225,15 @@ function RegisterMeter() {
                 label={t('operator.registerMeter.userLabel')}
               />
               <AsyncState isPending={usersQuery.isPending} error={usersQuery.error}>
-                <select
+                <UserCombobox
                   id="userId"
+                  users={users}
                   value={selectedUserId}
-                  onChange={(e) => setSelectedUserId(e.target.value)}
-                  className={inputClass}
-                >
-                  <option value="">{t('operator.registerMeter.userPlaceholder')}</option>
-                  {users.map((u) => (
-                    <option key={u.id} value={u.id}>
-                      {u.nombre} — {u.correo}
-                    </option>
-                  ))}
-                </select>
+                  onChange={setSelectedUserId}
+                  placeholder={t('operator.registerMeter.userPlaceholder')}
+                  noResultsText={t('operator.registerMeter.userNoResults')}
+                  inputClassName={inputClass}
+                />
               </AsyncState>
             </div>
 
